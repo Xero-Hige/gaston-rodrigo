@@ -7,6 +7,9 @@
 const char* DICCIONARIO =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+const int ENCODE_ERROR = 3;
+const int WRITE_ERROR  = 4;
+
 /**
  * Escribe sobre el output_stream el contenido del
  * input_stream codificado en base 64

@@ -1,14 +1,11 @@
 /*
  * base_64.c
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
 
-const char* DICCIONARIO =
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+#include "base_64.h"
 
 /**
  * Transforma el contenido del arreglo 'input' en
@@ -16,7 +13,7 @@ const char* DICCIONARIO =
  * 64. El resultado se almacena en el arreglo 'output'.
  * Devuelve true si la operacion fue exitosa.
  */
-bool to_base64(char input[3], char output[4]) {
+bool encode_to_base64(char input[3], char output[4]) {
 	int32_t temporal = 0;
 	int32_t index = 0;
 
@@ -53,13 +50,57 @@ int index_of(char c, char* string, size_t len) {
 	return index;
 }
 
+bool decode_from_base64(char input[4], char output[3]) {
+
+}
+
+/**
+ * Escribe sobre el output_stream el contenido del
+ * input_stream codificado en base 64
+ */
+int encode(FILE* input_stream, FILE* output_stream)
+{
+	char input_buffer  [3];
+	char output_buffer [4];
+
+	int bytes_read = fread(input_buffer,sizeof(char),3,input_stream);
+	while ( bytes_read > 0)
+	{
+		if (bytes_read < 3)
+			input_buffer[2] = 0;
+		if (bytes_read < 2)
+			input_buffer[1] = 0;
+
+		if (!encode_to_base64(input_buffer,output_buffer))
+			return ENCODE_ERROR;
+
+		//AGREGAR EL PADDING SEGUN LOS BYTES LEIDOS
+
+		int bytes_wrote = fwrite(output_buffer, sizeof(char),4, output_stream);
+
+		if (bytes_wrote != 4)
+			return WRITE_ERROR;
+	}
+
+	return 0;
+}
+
+/**
+ * Escribe sobre el output_stream el contenido del
+ * input_stream decodificado de base 64.
+ * Pre: El input_stream contiene solo caracteres del
+ * 		"DICCIONARIO"
+ */
+int decode(FILE* input_stream, FILE* output_stream);
+
+/*
 int main(int argc, char* argv[]) {
 	char a[] = "foe";
 	char* b = malloc(4 * sizeof(char));
 	if (!b)
 		return -1;
 
-	int ret = to_base64(a, b);
+	int ret = encode_to_base64(a, b);
 	free(b);
 	return ret;
-}
+}*/
