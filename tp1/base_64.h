@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-const char* DICCIONARIO =
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+#define DICCIONARIO "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+#define ESCAPE '='
 
-const int ENCODE_ERROR = 3;
-const int WRITE_ERROR  = 4;
+#define ENCODE_ERROR 3
+#define DECODE_ERROR 4
+#define WRITE_ERROR  5
 
 /**
  * Escribe sobre el output_stream el contenido del
