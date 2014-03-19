@@ -7,6 +7,21 @@
 
 #include "base_64.h"
 
+#define little_endian 1 //TODO: checkear el formato de alguna manera
+
+/**
+ * Invierte las posiciones de un arreglo de 4 bytes
+ */
+void array_invert(char temporal_array[4]) {
+	char aux = 0;
+	aux = temporal_array[0];
+	temporal_array[0] = temporal_array[3];
+	temporal_array[3] = aux;
+	aux = temporal_array[1];
+	temporal_array[1] = temporal_array[2];
+	temporal_array[2] = aux;
+}
+
 /**
  * Transforma el contenido del arreglo 'input' en
  * una cadena con la codificacion de este en base
@@ -17,15 +32,25 @@ bool encode_to_base64(char input[3], char output[4]) {
 	int32_t temporal = 0;
 	int32_t index = 0;
 
-	memcpy(&temporal, input, 3);
-	temporal = temporal >> 8;
-
 	char* temporal_array = (char*) &temporal;
 	char* index_array = (char*) &index;
 
+	memcpy(&temporal, input, 3);
+
+	if (little_endian){
+		array_invert(temporal_array);
+	}
+
+	temporal = temporal >> 8;
+
+	printf("|%c|%c|%c|%c|",temporal_array[0],temporal_array[1],temporal_array[2],temporal_array[3]);
+
 	for (int i = 0; i < 4; i++) {
 		temporal = temporal << 6;
-		index_array[3] = temporal_array[0];
+		index_array[0] = temporal_array[3];
+		temporal_array[3] = 0;
+		printf("Index: %d\n",index);
+
 		output[i] = DICCIONARIO[index];
 	}
 
@@ -50,13 +75,19 @@ int index_of(char c, char* string, size_t len) {
 	return index;
 }
 
+/**
+ * Decodifica el contenido del arreglo 'input' en
+ * codificado en base 64. El resultado se almacena
+ * en el arreglo 'output'. Devuelve true si la
+ * operacion fue exitosa.
+ */
 bool decode_from_base64(char input[4], char output[3], int* padding) {
 	int32_t temporal = 0;
 	*padding = 0;
 	char* temporal_array = (char*) &temporal;
 
 	for (int i = 0; i < 4; i++) {
-		int index = index_of(input[i], DICCIONARIO);
+		int index = index_of(input[i], DICCIONARIO, 64); //TODO: largo de la base
 		if (index < 0) {
 			if (input[i] != ESCAPE)
 				return false;
@@ -115,7 +146,7 @@ int decode(FILE* input_stream, FILE* output_stream) {
 		if (bytes_read < 4) //No es la cantidad correcta de bytes
 			return ENCODE_ERROR; //TODO: cambiar tipo de error
 
-		if (!bool decode_from_base64(input_buffer, output_buffer,padding))
+		if (!decode_from_base64(input_buffer, output_buffer,padding))
 			return DECODE_ERROR;
 
 		int bytes_wrote = fwrite(output_buffer, sizeof(char), 4, output_stream);
@@ -127,15 +158,3 @@ int decode(FILE* input_stream, FILE* output_stream) {
 	return 0;
 
 }
-
-/*
- int main(int argc, char* argv[]) {
- char a[] = "foe";
- char* b = malloc(4 * sizeof(char));
- if (!b)
- return -1;
-
- int ret = encode_to_base64(a, b);
- free(b);
- return ret;
- }*/
