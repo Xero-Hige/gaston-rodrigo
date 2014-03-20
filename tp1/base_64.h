@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define DICCIONARIO "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-#define ESCAPE '='
+#define ALFABETO "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+#define PADDING_CHAR '='
 
 #define ENCODE_ERROR 3
 #define DECODE_ERROR 4

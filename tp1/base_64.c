@@ -7,7 +7,20 @@
 
 #include "base_64.h"
 
-#define little_endian 1 //TODO: checkear el formato de alguna manera
+static bool little_endian = true;
+
+/**
+ * Setea la variable que indica si el sistema es
+ * little o big endian
+ */
+void set_endianess(void) {
+	int i = 1;
+	char *p = (char *) &i;
+	if (p[0] == 1)
+		little_endian = true;
+	else
+		little_endian = false;
+}
 
 /**
  * Invierte las posiciones de un arreglo de 4 bytes
@@ -37,21 +50,23 @@ bool encode_to_base64(char input[3], char output[4]) {
 
 	memcpy(&temporal, input, 3);
 
-	if (little_endian){
+	if (little_endian)
 		array_invert(temporal_array);
-	}
 
 	temporal = temporal >> 8;
 
-	printf("|%c|%c|%c|%c|",temporal_array[0],temporal_array[1],temporal_array[2],temporal_array[3]);
-
 	for (int i = 0; i < 4; i++) {
 		temporal = temporal << 6;
-		index_array[0] = temporal_array[3];
-		temporal_array[3] = 0;
-		printf("Index: %d\n",index);
 
-		output[i] = DICCIONARIO[index];
+		if (little_endian) {	//Little endian
+			index_array[0] = temporal_array[3];
+			temporal_array[3] = 0;
+		} else { 				//Big endian
+			index_array[3] = temporal_array[0];
+			temporal_array[0] = 0;
+		}
+
+		output[i] = ALFABETO[index];
 	}
 
 	return true;
@@ -87,19 +102,33 @@ bool decode_from_base64(char input[4], char output[3], int* padding) {
 	char* temporal_array = (char*) &temporal;
 
 	for (int i = 0; i < 4; i++) {
-		int index = index_of(input[i], DICCIONARIO, 64); //TODO: largo de la base
+		int index = index_of(input[i], ALFABETO, 64); //TODO: largo de la base
 		if (index < 0) {
-			if (input[i] != ESCAPE)
+			if (input[i] != PADDING_CHAR)
 				return false;
 			*padding += 1;
 			temporal_array[i] = 0;
 		} else {
-			temporal_array[i] = DICCIONARIO[index];
+			temporal_array[i] = ALFABETO[index];
 		}
 		temporal = temporal >> 6;
 	}
 
 	return true;
+}
+
+/**
+ * Agrega los caracteres de padding necesarios segun la
+ * cantidad de bytes leidos
+ */
+void add_padding(int bytes_read, char buffer[4]) {
+	if (bytes_read < 3) {
+		if (bytes_read < 3)
+			buffer[3] = PADDING_CHAR;
+
+		if (bytes_read < 2)
+			buffer[2] = PADDING_CHAR;
+	}
 }
 
 /**
@@ -110,7 +139,10 @@ int encode(FILE* input_stream, FILE* output_stream) {
 	char input_buffer[3];
 	char output_buffer[4];
 
+	set_endianess();
+
 	int bytes_read = fread(input_buffer, sizeof(char), 3, input_stream);
+
 	while (bytes_read > 0) {
 		if (bytes_read < 3)
 			input_buffer[2] = 0;
@@ -120,7 +152,7 @@ int encode(FILE* input_stream, FILE* output_stream) {
 		if (!encode_to_base64(input_buffer, output_buffer))
 			return ENCODE_ERROR;
 
-		//TODO: AGREGAR EL PADDING SEGUN LOS BYTES LEIDOS
+		add_padding(bytes_read, output_buffer);
 
 		int bytes_wrote = fwrite(output_buffer, sizeof(char), 4, output_stream);
 
@@ -135,23 +167,40 @@ int encode(FILE* input_stream, FILE* output_stream) {
  * Escribe sobre el output_stream el contenido del
  * input_stream decodificado de base 64.
  * Pre: El input_stream contiene solo caracteres del
- * 		"DICCIONARIO"
+ * 		"ALFABETO"
  */
 int decode(FILE* input_stream, FILE* output_stream) {
 	char input_buffer[4];
 	char output_buffer[3];
+
+	set_endianess();
+
 	int padding = 0;
 	int bytes_read = fread(input_buffer, sizeof(char), 4, input_stream);
 	while (bytes_read > 0) {
 		if (bytes_read < 4) //No es la cantidad correcta de bytes
 			return ENCODE_ERROR; //TODO: cambiar tipo de error
 
-		if (!decode_from_base64(input_buffer, output_buffer,padding))
+		if (!decode_from_base64(input_buffer, output_buffer, padding))
 			return DECODE_ERROR;
 
-		int bytes_wrote = fwrite(output_buffer, sizeof(char), 4, output_stream);
+		int bytes_to_write = 3;
 
-		if (bytes_wrote != 4)
+		if (padding != 0)
+		{
+			if (padding == 1)
+			{
+				bytes_to_write = 2;
+			}
+			if(padding == 2)
+			{
+				bytes_to_write = 1;
+			}
+		}
+
+		int bytes_wrote = fwrite(output_buffer, sizeof(char), bytes_to_write, output_stream);
+
+		if (bytes_wrote != bytes_to_write)
 			return WRITE_ERROR;
 	}
 
