@@ -101,19 +101,32 @@ bool decode_from_base64(char input[4], char output[3], int* padding) {
 	*padding = 0;
 	char* temporal_array = (char*) &temporal;
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 3; i >= 0; i--) {
 		int index = index_of(input[i], ALFABETO, 64); //TODO: largo de la base
 		if (index < 0) {
 			if (input[i] != PADDING_CHAR)
 				return false;
 			*padding += 1;
-			temporal_array[i] = 0;
+			if (little_endian)
+				temporal_array[3] = 0;
+			else
+				temporal_array[0] = 0;
+
 		} else {
-			temporal_array[i] = ALFABETO[index];
+			if (little_endian)
+				temporal_array[3] = index;
+			else
+				temporal_array[0] = index;
 		}
 		temporal = temporal >> 6;
 	}
 
+	printf("-> %d <-\n", temporal);
+
+	if (little_endian)
+		array_invert(temporal_array);
+
+	memcpy(output, (temporal_array + 1), 3);
 	return true;
 }
 
@@ -181,24 +194,22 @@ int decode(FILE* input_stream, FILE* output_stream) {
 		if (bytes_read < 4) //No es la cantidad correcta de bytes
 			return ENCODE_ERROR; //TODO: cambiar tipo de error
 
-		if (!decode_from_base64(input_buffer, output_buffer, padding))
+		if (!decode_from_base64(input_buffer, output_buffer, &padding))
 			return DECODE_ERROR;
 
 		int bytes_to_write = 3;
 
-		if (padding != 0)
-		{
-			if (padding == 1)
-			{
+		if (padding != 0) {
+			if (padding == 1) {
 				bytes_to_write = 2;
 			}
-			if(padding == 2)
-			{
+			if (padding == 2) {
 				bytes_to_write = 1;
 			}
 		}
 
-		int bytes_wrote = fwrite(output_buffer, sizeof(char), bytes_to_write, output_stream);
+		int bytes_wrote = fwrite(output_buffer, sizeof(char), bytes_to_write,
+				output_stream);
 
 		if (bytes_wrote != bytes_to_write)
 			return WRITE_ERROR;
