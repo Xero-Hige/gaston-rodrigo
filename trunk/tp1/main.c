@@ -5,7 +5,8 @@
 
 void usage(char* nombre);
 void version(char* nombre);
-//void* parse_resolution(char* str);
+void* parse_encode(char* str);
+void* parse_decode(char* str);
 //void print_board(FILE* file, int width, int height);
 
 int main(int argc, char* argv[]){
@@ -15,11 +16,15 @@ int main(int argc, char* argv[]){
 	FILE* file;
 
 	// Creo el parseador de argumentos
-	args = ParseArg_new(4);
+	args = ParseArg_new(6);
 	// Agrego los argumentos a parsear, si uso valores por defecto como NULL con tama~no 0,
 	// estoy haciendo qe sean obligatorios los argumentos
 	ParseArg_addArg(args, NULL, 'h', "help", NULL, 0);
-	ParseArg_addArg(args, NULL, 'V', "version", NULL, 0);
+	ParseArg_addArg(args, NULL, 'v', "version", NULL, 0);
+	ParseArg_addArg(args, &parse_encode, 'e', "encode", NULL, 0);
+	ParseArg_addArg(args, &parse_decode, 'd', "decode", NULL, 0);
+	ParseArg_addArg(args, &ParseArg_parseStr, 'o', "output", NULL, 0);
+	ParseArg_addArg(args, &ParseArg_parseStr, 'i', "input", NULL, 0);
 	//ParseArg_addArg(args, &parse_resolution, 'r', "resolution", NULL, 0);
 	//ParseArg_addArg(args, &ParseArg_parseStr, 'o', "output", NULL, 0);
 	ParseArg_parse(args, argc, argv);
@@ -29,17 +34,16 @@ int main(int argc, char* argv[]){
 		ParseArg_delete(args);
 		return 0;
 	}
-
-	if(ParseArg_getArg(args, 'V')){
+	if(ParseArg_getArg(args, 'v')){
 		version(argv[0]);
 		ParseArg_delete(args);
 		return 0;
 	}
 
-	//if(!(output = (char*) ParseArg_getArg(args, 'o'))){
-	//	ParseArg_delete(args);
-	//	return 1;
-	//}
+	if(!(output = (char*) ParseArg_getArg(args, 'o'))){
+		ParseArg_delete(args);
+		return 1;
+	}
 
 	if(output[0] == '-'){
 		file = stdout;
@@ -75,18 +79,13 @@ void version(char* nombre){
 }
 
 void usage(char* nombre){
-	printf("Usage:\n");
-	printf("\t%s -h\n", nombre);
-	printf("\t%s -V\n", nombre);
-	printf("\t%s [options]\n", nombre);
-	printf("Options:\n");
-	printf("\t-V, --version\t\tPrint version and quit.\n");
-	printf("\t-h, --help\t\tPrint this information.\n");
-	//printf("\t-r, --resolution\tSet bitmap resolution to WxH pixels.\n");
-	//printf("\t-o, --output\t\tPath to output file.\n");
-	printf("Examples:\n");
-	//printf("\t%s -o output.pgm\n", nombre);
-	//printf("\t%s -r 800x600 -o file.pgm\n", nombre);
+	printf("OPTIONS:\n");
+	printf("-e --encode Encodes to Base64\n");
+	printf("-d --decode Decodes from Base64\n");
+	printf("-i --input file Reads from file or stdin\n");
+	printf("-o --output file Writes to file or stdout\n");
+	printf("-v --version Show version string\n");
+	printf("-h --help Print this message and quit\n");
 }
 
 //void* parse_resolution(char* str){
@@ -123,6 +122,14 @@ void usage(char* nombre){
 //
 //	return res;
 //}
+void* parse_encode(char* str){
+	if (str!=NULL)
+		str=NULL;
+}
+void* parse_decode(char* str){
+	if (str!=NULL)
+		str=NULL;
+}
 //
 //void print_board(FILE* file, int width, int height){
 //	int c_w = width/8,
