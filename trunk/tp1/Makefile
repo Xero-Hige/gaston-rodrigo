@@ -10,7 +10,7 @@ EXEC:= tp0
 
 all: $(EXEC)
 
-$(EXEC): main.o arg_parse.o
+$(EXEC): main.o base_64.o arg_parse.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 valgrind: $(EXEC)

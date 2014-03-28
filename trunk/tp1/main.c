@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "base_64.h"
 #include "arg_parse.h"
 
 void usage(char* nombre);
 void version(char* nombre);
-void* parse_encode(char* str);
-void* parse_decode(char* str);
 //void print_board(FILE* file, int width, int height);
 
 int main(int argc, char* argv[]){
 	TParseArg* args;
 	char *output = NULL;
+	char *input = NULL;
 	int* res = NULL;
-	FILE* file;
+	FILE* inFile;
+	FILE* outFile;
 
 	// Creo el parseador de argumentos
 	args = ParseArg_new(6);
@@ -21,12 +22,10 @@ int main(int argc, char* argv[]){
 	// estoy haciendo qe sean obligatorios los argumentos
 	ParseArg_addArg(args, NULL, 'h', "help", NULL, 0);
 	ParseArg_addArg(args, NULL, 'v', "version", NULL, 0);
-	ParseArg_addArg(args, &parse_encode, 'e', "encode", NULL, 0);
-	ParseArg_addArg(args, &parse_decode, 'd', "decode", NULL, 0);
+	ParseArg_addArg(args, NULL, 'e', "encode", NULL, 0);
+	ParseArg_addArg(args, NULL, 'd', "decode", NULL, 0);
 	ParseArg_addArg(args, &ParseArg_parseStr, 'o', "output", NULL, 0);
 	ParseArg_addArg(args, &ParseArg_parseStr, 'i', "input", NULL, 0);
-	//ParseArg_addArg(args, &parse_resolution, 'r', "resolution", NULL, 0);
-	//ParseArg_addArg(args, &ParseArg_parseStr, 'o', "output", NULL, 0);
 	ParseArg_parse(args, argc, argv);
 
 	if(ParseArg_getArg(args, 'h')){
@@ -34,28 +33,58 @@ int main(int argc, char* argv[]){
 		ParseArg_delete(args);
 		return 0;
 	}
+
 	if(ParseArg_getArg(args, 'v')){
 		version(argv[0]);
 		ParseArg_delete(args);
 		return 0;
 	}
+	input = (char*) ParseArg_getArg(args, 'i');
+	output = (char*) ParseArg_getArg(args, 'o');
+	//if(!(input = (char*) ParseArg_getArg(args, 'i'))){
+	//	ParseArg_delete(args);
+	//	return 1;
+	//}
 
-	if(!(output = (char*) ParseArg_getArg(args, 'o'))){
-		ParseArg_delete(args);
-		return 1;
-	}
-
-	if(output[0] == '-'){
-		file = stdout;
+	if(input == NULL){
+		inFile = stdin;
 	}else{
-		file = fopen(output, "wb");
-		if(!file){
+		inFile = fopen(input, "wb");
+		if(!inFile){
+			free(input);
+			ParseArg_delete(args);
+			return 1;
+		}
+	}
+	printf("input: %s\n",input);
+
+	//if(!(output = (char*) ParseArg_getArg(args, 'o'))){
+	//	ParseArg_delete(args);
+	//	return 1;
+	//}
+
+	if(output == NULL){
+		outFile = stdout;
+	}else{
+		outFile = fopen(output, "wb");
+		if(!outFile){
 			free(output);
 			ParseArg_delete(args);
 			return 1;
 		}
 	}
 
+	if(ParseArg_getArg(args, 'e')){
+		encode(inFile,outFile);
+		ParseArg_delete(args);
+		return 0;
+	}
+
+	if(ParseArg_getArg(args, 'd')){
+		encode(inFile,outFile);
+		ParseArg_delete(args);
+		return 0;
+	}
 	//if(!(res = (int*) ParseArg_getArg(args, 'r'))){
 	//	free(output);
 	//	ParseArg_delete(args);
@@ -64,11 +93,15 @@ int main(int argc, char* argv[]){
 
 	//print_board(file, res[0], res[1]);
 
-	if(file != stdout)
-		fclose(file);
+	if(outFile != stdout)
+		fclose(outFile);
+
+	if(inFile != stdin)
+		fclose(inFile);
 
 	free(res);
 	free(output);
+	free(input);
 	ParseArg_delete(args);
 
 	return 0;
@@ -80,7 +113,6 @@ void version(char* nombre){
 
 void usage(char* nombre){
 	printf("OPTIONS:\n");
-	printf("-e --encode Encodes to Base64\n");
 	printf("-d --decode Decodes from Base64\n");
 	printf("-i --input file Reads from file or stdin\n");
 	printf("-o --output file Writes to file or stdout\n");
@@ -122,15 +154,7 @@ void usage(char* nombre){
 //
 //	return res;
 //}
-void* parse_encode(char* str){
-	if (str!=NULL)
-		str=NULL;
-}
-void* parse_decode(char* str){
-	if (str!=NULL)
-		str=NULL;
-}
-//
+
 //void print_board(FILE* file, int width, int height){
 //	int c_w = width/8,
 //		c_w_j,
