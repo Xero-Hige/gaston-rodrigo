@@ -49,14 +49,13 @@ int main(int argc, char* argv[]){
 	if(input == NULL){
 		inFile = stdin;
 	}else{
-		inFile = fopen(input, "wb");
+		inFile = fopen(input, "r");
 		if(!inFile){
 			free(input);
 			ParseArg_delete(args);
 			return 1;
 		}
 	}
-	printf("input: %s\n",input);
 
 	//if(!(output = (char*) ParseArg_getArg(args, 'o'))){
 	//	ParseArg_delete(args);
