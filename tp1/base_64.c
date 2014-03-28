@@ -155,7 +155,8 @@ int encode(FILE* input_stream, FILE* output_stream) {
 	set_endianess();
 
 	int bytes_read = fread(input_buffer, sizeof(char), 3, input_stream);
-
+	printf("bytes read %d\n",bytes_read);
+	printf("entrada: %s\n ", input_buffer);
 	while (bytes_read > 0) {
 		if (bytes_read < 3)
 			input_buffer[2] = 0;
@@ -172,6 +173,7 @@ int encode(FILE* input_stream, FILE* output_stream) {
 		if (bytes_wrote != 4)
 			return WRITE_ERROR;
 	}
+		printf("salida : %s\n ", output_buffer);
 
 	return 0;
 }
