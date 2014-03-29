@@ -121,8 +121,6 @@ bool decode_from_base64(char input[4], char output[3], int* padding) {
 		temporal = temporal >> 6;
 	}
 
-	printf("-> %d <-\n", temporal);
-
 	if (little_endian)
 		array_invert(temporal_array);
 
@@ -155,8 +153,6 @@ int encode(FILE* input_stream, FILE* output_stream) {
 	set_endianess();
 
 	int bytes_read = fread(input_buffer, sizeof(char), 3, input_stream);
-	printf("bytes read %d\n",bytes_read);
-	printf("entrada: %s\n ", input_buffer);
 	while (bytes_read > 0) {
 		if (bytes_read < 3)
 			input_buffer[2] = 0;
@@ -172,8 +168,9 @@ int encode(FILE* input_stream, FILE* output_stream) {
 
 		if (bytes_wrote != 4)
 			return WRITE_ERROR;
+
+		bytes_read = fread(input_buffer, sizeof(char), 3, input_stream);
 	}
-		printf("salida : %s\n ", output_buffer);
 
 	return 0;
 }
@@ -215,6 +212,8 @@ int decode(FILE* input_stream, FILE* output_stream) {
 
 		if (bytes_wrote != bytes_to_write)
 			return WRITE_ERROR;
+
+		bytes_read = fread(input_buffer, sizeof(char), 4, input_stream);
 	}
 
 	return 0;
