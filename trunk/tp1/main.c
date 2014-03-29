@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
 	}
 
 	if(ParseArg_getArg(args, 'd')){
-		encode(inFile,outFile);
+		decode(inFile,outFile);
 		ParseArg_delete(args);
 		return 0;
 	}
