@@ -1,0 +1,118 @@
+% ------ Clase de documento ------
+\documentclass[a4paper,10pt,oneside]{article}
+
+% ------ Paquetes ------
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[activeacute,spanish]{babel}
+
+% ------ Configuración ------
+\title{\textbf{66.20 Organización de Computadoras\\ Trabajo Práctico 0: \\ Infraestructura básica}}
+
+\author{	Burdet Rodrigo, \textit{Padrón Nro. 93440}\\
+            \texttt{ rodrigoburdet@gmail.com}\\\\
+            Romani Nazareno, \textit{Padrón Nro. 83991}                     \\
+            \texttt{ nazareno.romani@gmail.com}\\\\
+            Martinez Gaston Alberto, \textit{Padrón Nro. 91383}                     \\
+            \texttt{ gaston.martinez.90@gmail.com }\\\\[2.5ex]
+            \normalsize{1er. Cuatrimestre de 2014}                       \\
+            \normalsize66.20 Organización de Computadoras\\
+            \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
+       }
+\date{30/03/2014}
+
+
+
+% ----- Cuerpo del documento -----
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+
+\newpage
+
+\section{Objetivos}
+    Familiarizarse con las herramientas de software que usaremos en los siguientes trabajos, implementando un programa (y su correspondiente documentacion) que resuelva el problema piloto que presentaremos mas abajo.
+
+\section{Resumen}
+    En el presente trabajo, se implementó un algoritmo que resuelve la transformación de un conjunto arbitrario de bytes en un conjunto formado por caracteres ASCII y viceversa. Los distintos valores a codificar/decodificar,  son obtenidos a través de los parámetros definidos en el enunciado.
+    El programa fue compilado tanto en la máquina host (sistema operativo linux), como en una máquina corriendo el sistema operativo NetBSD.
+
+\section{Desarrollo}
+	
+	\subsection{Paso 1: Configuración de Entorno de Desarrollo}
+	El primer paso fue configurar el entorno de desarrollo, de acuerdo a la guía facilitada por la cátedra. \\
+	Trabajamos con la distribución de linux basada en Debian y con el GxEmul proporcionado por la cátedra, 
+	el cual tiene ya configurado NetBSD.
+	
+	\subsection{Paso 2: Implementación del programa}
+	El programa debe ejecutarse por línea de comando y la salida del mismo dependerá del valor de los argumentos con los que se lo haya invocado.
+	\subsubsection{Ingreso de parámetros}
+		El formato para invocar al programa es el siguiente:
+		\begin{center}
+			./tp0 [OPTIONS]
+		\end{center}
+	Los parámetros válidos que puede recibir el programa son los siguientes: 
+	
+
+		\begin{tabbing}
+		 \textbf{-e , --encode} 	(Encodes to Base64). \\
+		\textbf{-d , --decode} (Decodes from Base64).\\
+		 \textbf{-i , --input file} 		(Reads from file or stdin).\\
+		\textbf{-o , --output file} 		(Writes to file or stdout).\\
+		\textbf{-v , --version} 		(Show version string).\\
+		\textbf{-h , --help} 		(Print this message and quit).\\
+		\end{tabbing}
+	En caso de recibir un parámetro diferente a alguno de los listados anteriormente, la salida del programa será la misma que la de la opción -h, para despejar posibles dudas de uso.  VER VER
+		
+	\subsubsection{Interpretación de parámetros}
+		Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. Se puede conocer más en detalle el funcionamiento de las mismas, a través de la documentación incluida en dicho archivo. 
+		Estas funciones permiten recoger los parámetros de entrada del programa y ejecutar la funcionalidad correspondiente. Estas son compatibles con NetBSD.
+			
+	\section{Código para compilar el programa con gcc}
+	
+		Para poder compilar el proyecto, se debe abrir una terminal linux dentro del directorio donde se encuentra el código 
+		fuente escrito en C, y utilizar el siguiente comando:
+		\begin{center}
+			\texttt{gcc -o tp0 tp0.c }
+		\end{center}
+
+	Esto generara un archivo ejecutable, llamado tp0, con el que luego realizaremos las pruebas.\newline
+	Para generar el cógido en MIPS32, generado por el compilador, vamos a usar el siguiente comando:
+		\begin{center}
+			gcc -march=mips32 -S -c tp0.c -o tp0.S
+		\end{center}
+		
+	
+\section{Corridas de prueba y Mediciones}
+
+	En las figuras que siguen a continuación se muestran los comandos utilizados para ejecutar el programa y se puede apreciar en los gráficos los resultados de las diferentes pruebas que realizamos.  \newpage
+	
+	\begin{figure}[!htp]
+		\begin{center}
+			\includegraphics[width=0.50\textwidth]{corrida1.png}
+		\end{center}
+		\caption{Corrida 1} \label{Corrida 1}
+	\end{figure}
+
+	\begin{figure}[!htp]
+		\begin{center}
+			\includegraphics[width=0.50\textwidth]{corrida2.png}
+		\end{center}
+		\caption{Corrida 2} \label{Corrida 2}
+	\end{figure}
+
+	\begin{figure}[!htp]
+		\begin{center}
+			\includegraphics[width=0.50\textwidth]{corrida3.png}
+		\end{center}
+		\caption{Corrida 3} \label{Corrida 3}
+	\end{figure}
+
+
+\section{Conclusiones}	
+	Como se enuncia en el objetivo de este trabajo práctico, aprendimos a instalar y manejar el GxEmul, a realizar transferencias de archivos en linux, así como también compilar y ejecutar programas en el NetBSD. Por otro lado,  aprendimos a manejar y escribir informes en \LaTeX{}.
+	De este modo, estamos preparados para que en los próximos trabajos prácticos, nos aboquemos directamente al desarrollo de los mismos.
+
+\end{document}
+
