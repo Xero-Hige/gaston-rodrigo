@@ -63,7 +63,6 @@
 		\textbf{-v , --version} 		(Show version string).\\
 		\textbf{-h , --help} 		(Print this message and quit).\\
 		\end{tabbing}
-	En caso de recibir un parámetro diferente a alguno de los listados anteriormente, la salida del programa será la misma que la de la opción -h, para despejar posibles dudas de uso.  VER VER
 		
 	\subsubsection{Interpretación de parámetros}
 		Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. Se puede conocer más en detalle el funcionamiento de las mismas, a través de la documentación incluida en dicho archivo. 
@@ -74,39 +73,41 @@
 		Para poder compilar el proyecto, se debe abrir una terminal linux dentro del directorio donde se encuentra el código 
 		fuente escrito en C, y utilizar el siguiente comando:
 		\begin{center}
-			\texttt{gcc -o tp0 tp0.c }
+			\texttt{make}
 		\end{center}
-
+	Este comando ejecuta las directivas definidas en el archivo MakeFile generado para tal caso. 
 	Esto generara un archivo ejecutable, llamado tp0, con el que luego realizaremos las pruebas.\newline
-	Para generar el cógido en MIPS32, generado por el compilador, vamos a usar el siguiente comando:
-		\begin{center}
-			gcc -march=mips32 -S -c tp0.c -o tp0.S
-		\end{center}
-		
 	
 \section{Corridas de prueba y Mediciones}
 
-	En las figuras que siguen a continuación se muestran los comandos utilizados para ejecutar el programa y se puede apreciar en los gráficos los resultados de las diferentes pruebas que realizamos.  \newpage
+	En las figuras que siguen a continuación se muestran los comandos utilizados para ejecutar el programa y se puede apreciar los resultados de las diferentes pruebas que realizamos. Cabe acotar que cuando se encodea un archivo(./tp0 -e -i archivo), también se encodea el fin del mismo. \newpage
 	
 	\begin{figure}[!htp]
 		\begin{center}
-			\includegraphics[width=0.50\textwidth]{corrida1.png}
+			\includegraphics[width=0.50\textwidth]{test1.png}
 		\end{center}
-		\caption{Corrida 1} \label{Corrida 1}
+		\caption{Codificación de texto `foo`} \label{Figura 1}
 	\end{figure}
 
 	\begin{figure}[!htp]
 		\begin{center}
-			\includegraphics[width=0.50\textwidth]{corrida2.png}
+			\includegraphics[width=0.80\textwidth]{test2.png}
 		\end{center}
-		\caption{Corrida 2} \label{Corrida 2}
+		\caption{Codificación/Decodificación de texto `organizacion de computadoras 6620`} \label{Figura 2}
 	\end{figure}
 
 	\begin{figure}[!htp]
 		\begin{center}
-			\includegraphics[width=0.50\textwidth]{corrida3.png}
+			\includegraphics[width=0.50\textwidth]{test3.png}
 		\end{center}
-		\caption{Corrida 3} \label{Corrida 3}
+		\caption{Codificación/Decodificación de texto con uso de caracter de padding} \label{Figura 3}
+	\end{figure}
+	
+	\begin{figure}[!htp]
+		\begin{center}
+			\includegraphics[width=0.50\textwidth]{test4.png}
+		\end{center}
+		\caption{Codificación a través de archivo de entrada guardando la salida en otro archivo, decodificación de este último y comparacion de archivos} \label{Figura 4}
 	\end{figure}
 
 
