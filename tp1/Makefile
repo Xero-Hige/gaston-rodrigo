@@ -13,7 +13,7 @@ $(EXEC): main.o base_64.o arg_parse.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 valgrind: $(EXEC)
-	valgrind $(VFLAGS) ./$(EXEC) -e aaa
+	valgrind $(VFLAGS) ./$(EXEC) -e
 
 clean:
 	- $(RM) *.o $(EXEC)
