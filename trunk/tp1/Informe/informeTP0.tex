@@ -1,25 +1,68 @@
 % ------ Clase de documento ------
 \documentclass[a4paper,10pt,oneside]{article}
 
-% ------ Paquetes ------
-\usepackage{graphicx}
-\usepackage[latin1]{inputenc}
-\usepackage[activeacute,spanish]{babel}
+%-------------------------------------Paquetes-----------------------------------------------------------------------
+\usepackage[spanish]{babel}  % Traduce los textos a castellano
+\usepackage[utf8]{inputenc}	% Permite escribir directamente √°√©√≠√≥√∫√±
+\usepackage{t1enc}            	% Agrega caracteres extendidos al font
+\usepackage{amsmath} 		%Permite imprimir mas opcciones matematicas
+\usepackage{graphicx}		%Permite agregar imagenes al informe
+\usepackage{multicol}  		%Permite dividir el texto en varias columnas
+\usepackage{anysize}		%Permite modificar los margenes del documento
+\usepackage{float} 			%Permite utilizar H para colocar las imagenes en un lugar especifico 
+\usepackage{multirow}		%Permite dividir las tablas en subtablas
+\usepackage{booktabs}		%Permiten manejar mejor el tama√±o de las tablas
+\usepackage{tabulary}		%Permiten manejar mejor el tama√±o de las tablas
+\usepackage{fancyhdr}		%Permite agregar encabezado y pie fancy
 
-% ------ ConfiguraciÛn ------
-\title{\textbf{66.20 OrganizaciÛn de Computadoras\\ Trabajo Pr·ctico 0: \\ Infraestructura b·sica}}
+\usepackage{courier}		%
+\usepackage{color}			%
+\usepackage{listings}  		%Permite agregar codigo directamente sobre el documento
 
-\author{	Burdet Rodrigo, \textit{PadrÛn Nro. 93440}\\
+%---------------------------------------Definiciones propias---------------------------------------------------------
+\newcommand{\grad}{\hspace{-2mm}$\phantom{a}^{\circ}$} %El ¬∫ que no existe como comando
+\newcommand{\oiint}{\displaystyle\bigcirc\!\!\!\!\!\!\!\!\int\!\!\!\!\!\int} %Integral doble cerrada
+%------------------------------------------------------------------------------------------------------------------------
+
+%-------------------------------------Configuracion De Codigo----------------------------------
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{language=C,
+	breaklines=true,
+	keywordstyle=\bf\color{blue},
+	commentstyle=\tt\it\color{dkgreen},
+	stringstyle=\color{gray},
+ 	numbers=left,
+	numberstyle=\tiny\color{black},
+	stepnumber=2,
+	numbersep=8pt,
+	backgroundcolor=\color{white},
+	tabsize=4,
+	showspaces=false,
+	showstringspaces=false}
+
+\newcommand{\captionlisting}[2][]{%
+    \lstinputlisting[caption={\large{\detokenize{#2}}},#1]{#2}%
+}
+
+\renewcommand\lstlistingname{Archivo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------ Configuraci√≥n ------
+\title{\textbf{66.20 Organizaci√≥n de Computadoras\\ Trabajo Pr√°ctico 0: \\ Infraestructura b√°sica}}
+
+\author{	Burdet Rodrigo, \textit{Padr√≥n Nro. 93440}\\
             \texttt{ rodrigoburdet@gmail.com}\\\\
-            Romani Nazareno, \textit{PadrÛn Nro. 83991}                     \\
+            Romani Nazareno, \textit{Padr√≥n Nro. 83991}                     \\
             \texttt{ nazareno.romani@gmail.com}\\\\
-            Martinez Gaston Alberto, \textit{PadrÛn Nro. 91383}                     \\
+            Martinez Gaston Alberto, \textit{Padr√≥n Nro. 91383}                     \\
             \texttt{ gaston.martinez.90@gmail.com }\\\\[2.5ex]
             \normalsize{1er. Cuatrimestre de 2014}                       \\
-            \normalsize66.20 OrganizaciÛn de Computadoras\\
-            \normalsize{Facultad de IngenierÌa, Universidad de Buenos Aires}            \\
+            \normalsize66.20 Organizaci√≥n de Computadoras\\
+            \normalsize{Facultad de Ingenier√≠a, Universidad de Buenos Aires}            \\
        }
-\date{30/03/2014}
+\date{\today}
 
 
 
@@ -32,88 +75,114 @@
 \newpage
 
 \section{Objetivos}
-    Familiarizarse con las herramientas de software que usaremos en los siguientes trabajos, implementando un programa (y su correspondiente documentacion) que resuelva el problema piloto que presentaremos mas abajo.
+    Familiarizarse con las herramientas de software que usaremos en los siguientes trabajos, implementando un programa (y su correspondiente documentaci√≥n) que resuelva el problema piloto que presentaremos mas abajo.
 
 \section{Resumen}
-    En el presente trabajo, se implementÛ un algoritmo que resuelve la transformaciÛn de un conjunto arbitrario de bytes en un conjunto formado por caracteres ASCII y viceversa. Los distintos valores a codificar/decodificar,  son obtenidos a travÈs de los par·metros definidos en el enunciado.
-    El programa fue compilado tanto en la m·quina host (sistema operativo linux), como en una m·quina corriendo el sistema operativo NetBSD.
+    En el presente trabajo, se implement√≥ un algoritmo que resuelve la transformaci√≥n de un conjunto arbitrario de bytes en un conjunto formado por caracteres ASCII y viceversa. Los distintos valores a codificar/decodificar,  son obtenidos a trav√©s de los par√°metros definidos en el enunciado.
+    El programa fue compilado tanto en la m√°quina host (sistema operativo Linux), como en una m√°quina corriendo el sistema operativo NetBSD.
 
 \section{Desarrollo}
 	
-	\subsection{Paso 1: ConfiguraciÛn de Entorno de Desarrollo}
-	El primer paso fue configurar el entorno de desarrollo, de acuerdo a la guÌa facilitada por la c·tedra. \\
-	Trabajamos con la distribuciÛn de linux basada en Debian y con el GxEmul proporcionado por la c·tedra, 
-	el cual tiene ya configurado NetBSD.
+\subsection{Paso 1: Configuraci√≥n de Entorno de Desarrollo}
+El primer paso fue configurar el entorno de desarrollo, de acuerdo a la gu√≠a facilitada por la c√°tedra. \\
+Trabajamos con una distribuci√≥n de Linux basada en Debian y con el GxEmul proporcionado por la c√°tedra, el cual tiene ya configurado NetBSD.
 	
-	\subsection{Paso 2: ImplementaciÛn del programa}
-	El programa debe ejecutarse por lÌnea de comando y la salida del mismo depender· del valor de los argumentos con los que se lo haya invocado.
-	\subsubsection{Ingreso de par·metros}
-		El formato para invocar al programa es el siguiente:
-		\begin{center}
-			./tp0 [OPTIONS]
-		\end{center}
-	Los par·metros v·lidos que puede recibir el programa son los siguientes: 
-	
+\subsection{Paso 2: Implementaci√≥n del programa}
+El programa debe ejecutarse por l√≠nea de comando y la salida del mismo depender√° del valor de los argumentos con los que se lo haya invocado.
+\subsubsection{Ingreso de par√°metros}
+El formato para invocar al programa es el siguiente:
+\begin{center}
+	\texttt{./tp0 [OPTIONS]}
+\end{center}
+Los par√°metros v√°lidos que puede recibir el programa son los siguientes: \\ 
 
-		\begin{tabbing}
-		 \textbf{-e , --encode} 	(Encodes to Base64). \\
-		\textbf{-d , --decode} (Decodes from Base64).\\
-		 \textbf{-i , --input file} 		(Reads from file or stdin).\\
-		\textbf{-o , --output file} 		(Writes to file or stdout).\\
-		\textbf{-v , --version} 		(Show version string).\\
-		\textbf{-h , --help} 		(Print this message and quit).\\
-		\end{tabbing}
-		
-	\subsubsection{InterpretaciÛn de par·metros}
-		Para parsear los par·metros se usaron las funciones definidas en arg\_parse.h. Se puede conocer m·s en detalle el funcionamiento de las mismas, a travÈs de la documentaciÛn incluida en dicho archivo. 
-		Estas funciones permiten recoger los par·metros de entrada del programa y ejecutar la funcionalidad correspondiente. Estas son compatibles con NetBSD.
+\begin{ttfamily}
+\begin{tabular}{lll}
+
+\bf{-e,} & \bf{--encode} &(Encodes to Base64). \\
+\bf{-d,} & \bf{--decode} &(Decodes from Base64).\\
+\bf{-i,} & \bf{--input file} &(Reads from file or stdin).\\
+\bf{-o,} & \bf{--output file} &(Writes to file or stdout).\\
+\bf{-v,} & \bf{--version} 	&(Show version string).\\
+\bf{-h,} & \bf{--help} &(Print this message and quit).\\
+\end{tabular}
+\end{ttfamily}
+
+\subsubsection{Interpretaci√≥n de par√°metros}
+Para parsear los par√°metros se usaron las funciones definidas en arg\_parse.h. Se puede conocer m√°s en detalle el funcionamiento de las mismas, a trav√©s de la documentaci√≥n incluida en dicho archivo. 
+		Estas funciones permiten recoger los par√°metros de entrada del programa y ejecutar la funcionalidad correspondiente. Estas son compatibles con NetBSD.
 			
-	\section{CÛdigo para compilar el programa con gcc}
+	\section{Compilaci√≥n del programa}
 	
-		Para poder compilar el proyecto, se debe abrir una terminal linux dentro del directorio donde se encuentra el cÛdigo 
-		fuente escrito en C, y utilizar el siguiente comando:
-		\begin{center}
-			\texttt{make}
-		\end{center}
-	Este comando ejecuta las directivas definidas en el archivo MakeFile generado para tal caso. 
-	Esto generara un archivo ejecutable, llamado tp0, con el que luego realizaremos las pruebas.\newline
+		Para poder compilar el proyecto, se debe abrir una terminal Linux dentro del directorio donde se encuentra el c√≥digo 
+		fuente escrito en C, y ejecutar el script \textit{Makefile} con el comando \texttt{make} \footnote{Requiere tener instalado el programa \it{Make} y el compilador \it{GCC}}. Este comando ejecuta las directivas definidas en el archivo \texttt{Makefile} generado para tal caso. 
+		
+		 Esto generara un archivo ejecutable, llamado \textit{tp0} \footnote{El nombre del ejecutable se puede editar desde el script o desde la consola al invocar \texttt{make}}.  Tambien se puede ejecutar el comando \texttt{make Valgrind} para compilar el programa y correrlo con \textit{Valgrind}, de manera de poder depurarlo en modo interactivo.
 	
 \section{Corridas de prueba y Mediciones}
 
-	En las figuras que siguen a continuaciÛn se muestran los comandos utilizados para ejecutar el programa y se puede apreciar los resultados de las diferentes pruebas que realizamos. Cabe acotar que cuando se encodea un archivo(./tp0 -e -i archivo), tambiÈn se encodea el fin del mismo. \newpage
+	En las figuras que siguen a continuaci√≥n se muestran los comandos utilizados para ejecutar el programa y se puede apreciar los resultados de las diferentes pruebas que realizamos. Cabe acotar que cuando se encodea un archivo( \texttt{./tp0 -e -i <archivo>}), tambi√©n se encodea el fin del mismo. \newpage
 	
-	\begin{figure}[!htp]
+	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[width=0.50\textwidth]{test1.png}
 		\end{center}
-		\caption{CodificaciÛn de texto `foo`} \label{Figura 1}
+		\caption{Codificaci√≥n de texto `foo`} \label{Figura 1}
 	\end{figure}
 
-	\begin{figure}[!htp]
+	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[width=0.80\textwidth]{test2.png}
 		\end{center}
-		\caption{CodificaciÛn/DecodificaciÛn de texto `organizacion de computadoras 6620`} \label{Figura 2}
+		\caption{Codificaci√≥n/Decodificaci√≥n de texto `organizacion de computadoras 6620`} \label{Figura 2}
 	\end{figure}
 
-	\begin{figure}[!htp]
+	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[width=0.50\textwidth]{test3.png}
 		\end{center}
-		\caption{CodificaciÛn/DecodificaciÛn de texto con uso de caracter de padding} \label{Figura 3}
+		\caption{Codificaci√≥n/Decodificaci√≥n de texto con uso de caracter de padding} \label{Figura 3}
 	\end{figure}
 	
-	\begin{figure}[!htp]
+	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[width=0.50\textwidth]{test4.png}
 		\end{center}
-		\caption{CodificaciÛn a travÈs de archivo de entrada guardando la salida en otro archivo, decodificaciÛn de este ˙ltimo y comparacion de archivos} \label{Figura 4}
+		\caption{Codificaci√≥n a trav√©s de archivo de entrada guardando la salida en otro archivo, decodificaci√≥n de este √∫ltimo y comparaci√≥n de archivos} \label{Figura 4}
 	\end{figure}
+	
+	\newpage
+\appendix
+\section{Codigo C}
 
+\captionlisting{../arg_parse.h}
+\captionlisting{../arg_parse.c}
 
+\captionlisting{../base_64.h}
+\captionlisting{../base_64.c}
+
+\captionlisting{../main.c}
+\newpage
+\section{Makefile}
+
+\lstinputlisting[language=make,
+			breaklines=true,
+			keywordstyle=\bf\color{blue},
+			commentstyle=\tt\it\color{dkgreen},
+			stringstyle=\color{gray},
+ 			numbers=left,
+			numberstyle=\tiny\color{black},
+			stepnumber=1,
+			numbersep=8pt,
+			backgroundcolor=\color{white},
+			tabsize=4,
+			showspaces=false,
+			showstringspaces=false]{../Makefile}
+
+\newpage
 \section{Conclusiones}	
-	Como se enuncia en el objetivo de este trabajo pr·ctico, aprendimos a instalar y manejar el GxEmul, a realizar transferencias de archivos en linux, asÌ como tambiÈn compilar y ejecutar programas en el NetBSD. Por otro lado,  aprendimos a manejar y escribir informes en \LaTeX{}.
-	De este modo, estamos preparados para que en los prÛximos trabajos pr·cticos, nos aboquemos directamente al desarrollo de los mismos.
+	Como se enuncia en el objetivo de este trabajo pr√°ctico, aprendimos a instalar y manejar el GxEmul, a realizar transferencias de archivos en Linux, as√≠ como tambi√©n compilar y ejecutar programas en el NetBSD. Por otro lado,  aprendimos a manejar y escribir informes en \LaTeX{}.
+	De este modo, estamos preparados para que en los pr√≥ximos trabajos pr√°cticos, nos aboquemos directamente al desarrollo de los mismos.
 
 \end{document}
 
