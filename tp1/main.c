@@ -74,7 +74,7 @@ int main(int argc, char* argv[]){
 		ParseArg_delete(args);
 		return 0;
 	}
-
+	
 	if(outFile != stdout)
 		fclose(outFile);
 
