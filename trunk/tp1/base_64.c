@@ -44,6 +44,7 @@ void array_invert(char temporal_array[4]) {
 bool encode_to_base64(char input[3], char output[4]) {
 	int32_t temporal = 0;
 	int32_t index = 0;
+	int i;
 
 	char* temporal_array = (char*) &temporal;
 	char* index_array = (char*) &index;
@@ -55,7 +56,7 @@ bool encode_to_base64(char input[3], char output[4]) {
 
 	temporal = temporal >> 8;
 
-	for (int i = 0; i < 4; i++) {
+	for (i = 0; i < 4; i++) {
 		temporal = temporal << 6;
 
 		if (little_endian) {	//Little endian
@@ -79,8 +80,9 @@ bool encode_to_base64(char input[3], char output[4]) {
  */
 int index_of(char c, char* string, size_t len) {
 	int index = -1;
+	size_t i;
 
-	for (size_t i = 0; i < len; i++) {
+	for (i = 0; i < len; i++) {
 		if (c == string[i]) {
 			index = i;
 			break;
@@ -98,10 +100,11 @@ int index_of(char c, char* string, size_t len) {
  */
 bool decode_from_base64(char input[4], char output[3], int* padding) {
 	int32_t temporal = 0;
+	int i;
 	*padding = 0;
 	char* temporal_array = (char*) &temporal;
 
-	for (int i = 3; i >= 0; i--) {
+	for (i = 3; i >= 0; i--) {
 		int index = index_of(input[i], ALFABETO, 64); //TODO: largo de la base
 		if (index < 0) {
 			if (input[i] != PADDING_CHAR)
