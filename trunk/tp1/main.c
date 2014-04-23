@@ -8,6 +8,10 @@ void usage();
 void version(char* nombre);
 
 int main(int argc, char* argv[]){
+	if (argc < 2){
+		perror("No se especifico ningun comando");
+		return 1;
+	}
 	TParseArg* args;
 	char *output = NULL;
 	char *input = NULL;
@@ -74,6 +78,13 @@ int main(int argc, char* argv[]){
 		ParseArg_delete(args);
 		return 0;
 	}
+
+
+	if( !(ParseArg_getArg(args,'e')) || !(ParseArg_getArg(args,'d')) || !(ParseArg_getArg(args,'h')) || !(ParseArg_getArg(args,'v'))){
+		perror("No se especifico un comando valido");
+		return 1;
+	}
+
 	
 	if(outFile != stdout)
 		fclose(outFile);
