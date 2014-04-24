@@ -114,10 +114,19 @@ Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. 
 			
 	\section{Compilación del programa}
 	
-		Para poder compilar el proyecto, se debe abrir una terminal Linux dentro del directorio donde se encuentra el código 
-		fuente escrito en C, y ejecutar el script \textit{Makefile} con el comando \texttt{make} \footnote{Requiere tener instalado el programa \it{Make} y el compilador \it{GCC}}. Este comando ejecuta las directivas definidas en el archivo \texttt{Makefile} generado para tal caso. 
+	Para poder compilar el proyecto, se debe abrir una terminal Linux dentro del directorio donde se encuentra el código 
+	fuente escrito en C, y ejecutar el script \textit{Makefile} con el comando \texttt{make} \footnote{Requiere tener instalado el programa \it{Make} y el compilador \it{GCC}}. Este comando ejecuta las directivas definidas en el archivo \texttt{Makefile} generado para tal caso. 
 		
-		 Esto generara un archivo ejecutable, llamado \textit{tp0} \footnote{El nombre del ejecutable se puede editar desde el script o desde la consola al invocar \texttt{make}}.  Tambien se puede ejecutar el comando \texttt{make Valgrind} para compilar el programa y correrlo con \textit{Valgrind}, de manera de poder depurarlo en modo interactivo.
+	 Esto generara un archivo ejecutable, llamado \textit{tp0} \footnote{El nombre del ejecutable se puede editar desde el script o desde la consola al invocar \texttt{make}}.  Tambien se puede ejecutar el comando \texttt{make Valgrind} para compilar el programa y correrlo con \textit{Valgrind}, de manera de poder depurarlo en modo interactivo.
+		 
+	\section{Compilación del programa en NetBSD}
+	
+	Para poder compilar el proyecto en NetBSD, se debe ejecutar el comando:
+	
+	\begin{center}
+	\texttt{Gcc -c -S -O0 -mrnames arg_parse.c base_64.c main.c} 
+	\end{center}
+	
 	
 \section{Corridas de prueba y Mediciones}
 
