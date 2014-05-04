@@ -31,7 +31,44 @@ count:
 	sw a2,72($fp) #int words
 	sw a3,76($fp) #int bytes
 
+	move	s0, a0		#Guardo en el s0 el fp
+	
+	#Seteo los contadores a 0
+	li		s1, 0
+	li		s2, 0
+	li		s3, 0
 
+read_byte:
+	li		v0, 14			# Syscall para leer archivo
+	move	a0, s0			# Coloco el fp en a0
+	la		a1, byte_buffer	# Coloco la direccion del buffer donde se lee
+	li		a2, 1			# Coloco la cantidad de bytes a leer
+	syscall					# Leo 1 byte
+	ble		v0, end_read	# Salto al fin de la lectura si se termino de leer
+
+
+	addi	s3, s3, 1
+	lw		t1,	byte_buffer # Cargo lo leido en un registro
+
+
+
+end_read:
+	bl		v0, read_error	# Hubo un error en la lectura
+
+	#Recupero las direcciones de almacenamiento
+	lw		a1, 68($fp)		# int lines
+	lw		a2, 72($fp)		# int words
+	lw		a3, 76($fp)		# int bytes
+
+	#Guardo los acumuladores en los punteros
+	sw		s1, a1			# Guardo el acumulador de lineas
+	sw		s2, a2			# Guardo el acumulador de palabras
+	sw		s3, a3			# Guardo el acumulador de bytes
+
+	j		fin_count
+
+
+read_error:
 
 fin_count: 
 	move sp, $fp
@@ -50,3 +87,6 @@ fin_count:
 	addiu sp,sp,64
 	jr ra
 
+.data
+
+byte_buffer:	.space	1
