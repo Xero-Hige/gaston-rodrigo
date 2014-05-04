@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
 
 #include "arg_parse.h"
@@ -6,7 +8,7 @@
 #define MAX_FLAGS 5
 
 void usage();
-void version(char* nombre);
+void wc(int fd, int* lines, int* words, int* bytes); void version(char* nombre);
 
 int main(int argc, char* argv[]){
 	if (argc < 2){
@@ -16,8 +18,11 @@ int main(int argc, char* argv[]){
 	TParseArg* args;
 	char *input = NULL;
 	int* res = NULL;
-	FILE* inFile;
+	int fd;
 	int i;
+	int* lines;
+	int* words;
+	int* bytes;
 	int flagsPassed = 0;
 
 	// Creo el parseador de argumentos
@@ -81,7 +86,10 @@ int main(int argc, char* argv[]){
 	printf("flags %d\n",flagsPassed);
 	if ( 1 + argc - flagsPassed > 2 ){
 		for ( i = flagsPassed+1 ; i < argc ; i++ ){
-			printf("en i: %d %s \n",i, argv[argc+flagsPassed-i]);
+			//printf("en i: %d %s \n",i, argv[argc+flagsPassed-i]);
+			fd = open(argv[argc+flagsPassed-i],'r');
+			wc(fd, lines, words ,bytes);
+			printf("Lines: %d \t words: %d \t bytes: %d \n",*lines,*words,*bytes);
 		}
 	}
 
@@ -90,6 +98,9 @@ int main(int argc, char* argv[]){
 	if ( 1 + argc - flagsPassed == 2 ){
 		printf("archivo o stdin\n");
 		printf("es el %s", argv[1+argc-flagsPassed]);
+		fd = open(argv[argc+flagsPassed-i],'r');
+		wc(fd, lines, words ,bytes);
+		printf("Lines: %d \t words: %d \t bytes: %d \n",*lines,*words,*bytes);
 	}
 
 	//input = (char*) ParseArg_getArg(args, ' ');

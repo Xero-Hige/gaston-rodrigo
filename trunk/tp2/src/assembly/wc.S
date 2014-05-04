@@ -32,3 +32,21 @@ wc:
 	sw a3,76($fp) #int bytes
 
 
+
+fin: 
+	move $sp, $fp
+	lw $ra,56($sp)
+	lw $fp,52($sp)
+	lw $gp,48($sp)
+	lw s7,44($sp)
+	lw s6,44($sp)
+	lw s5,44($sp)
+	lw s4,44($sp)
+	lw s3,28($sp)
+	lw s2,24($sp)
+	lw s1,20($sp)
+	lw s0,16($sp)
+
+	addiu $sp,$sp,64
+	jr $ra
+
