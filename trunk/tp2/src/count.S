@@ -44,31 +44,40 @@ read_byte:
 	la		a1, byte_buffer	# Coloco la direccion del buffer donde se lee
 	li		a2, 1			# Coloco la cantidad de bytes a leer
 	syscall					# Leo 1 byte
-	ble		v0, end_read	# Salto al fin de la lectura si se termino de leer
+	blz		v0, read_error	# Salto al error durante la lectura
+	beqz	v0,	end_read	# Salto al fin de la lectura si se termino de leer
+	addi	s3, s3, 1		# Aumento 1 al conteo de bytes leidos
 
+	la		t1, byte_buffer # Cargo la direccion de lo leido
+	lbu		s4, 0(t1)		# Cargo lo leido en el registro
 
-	addi	s3, s3, 1
-	lw		t1,	byte_buffer # Cargo lo leido en un registro
+	li		t1, 9			# Cargo el valor entero de '\t'
+	bl		s4, t1, read_byte# Si es menor a '\t' no puede ser un separador
+	li		t1, 13			# Cargo el valor entero de \"v"
+	bg		s4, t1, read_byte# Si es mayor a '\v' no puede ser un separador
+	addi	s2, s2, 1		# Aumento en 1 el conteo de palabras
 
+	li		t1, 10			# Cargo el valor entero de '\n' (Nueva linea)
+	bne		s4, t1, read_byte# Vuelvo a leer si no es newline
+	addi	s1, s1, 1		# Aumento 1 el contador de lineas
+	j		read_byte		# Vuelvo a leer
 
+read_error:
+	# Guardo un valor de error en los acumuladores
+	li		s1, -1			# Guardo -1 en el acumulador de lineas (error)
+	li		s2, -1			# Guardo -1 en el acumulador de palabras (error)
+	li		s3, -1			# Guardo -1 en el acumulador de bytes (error)
 
 end_read:
-	bl		v0, read_error	# Hubo un error en la lectura
-
-	#Recupero las direcciones de almacenamiento
+	# Recupero las direcciones de almacenamiento
 	lw		a1, 68($fp)		# int lines
 	lw		a2, 72($fp)		# int words
 	lw		a3, 76($fp)		# int bytes
 
-	#Guardo los acumuladores en los punteros
+	# Guardo los acumuladores en los punteros
 	sw		s1, a1			# Guardo el acumulador de lineas
 	sw		s2, a2			# Guardo el acumulador de palabras
 	sw		s3, a3			# Guardo el acumulador de bytes
-
-	j		fin_count
-
-
-read_error:
 
 fin_count: 
 	move sp, $fp
