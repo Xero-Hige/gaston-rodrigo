@@ -9,7 +9,7 @@ EXEC:= tp1
 
 all: $(EXEC)
 
-$(EXEC): main.o arg_parse.o
+$(EXEC): main.o arg_parse.o wc.o
 	$(CC) $(CFLAGS) main.o arg_parse.o wc.o -o $(EXEC)
 
 valgrind: $(EXEC)
