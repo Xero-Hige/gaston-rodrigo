@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 
 #include "arg_parse.h"
@@ -87,7 +89,7 @@ int main(int argc, char* argv[]){
 	if ( 1 + argc - flagsPassed > 2 ){
 		for ( i = flagsPassed+1 ; i < argc ; i++ ){
 			//printf("en i: %d %s \n",i, argv[argc+flagsPassed-i]);
-			fd = open(argv[argc+flagsPassed-i],'r');
+			fd = open(argv[argc+flagsPassed-i], O_RDONLY, S_IRUSR|S_IWUSR);
 			wc(fd, lines, words ,bytes);
 			printf("Lines: %d \t words: %d \t bytes: %d \n",*lines,*words,*bytes);
 		}
@@ -98,7 +100,7 @@ int main(int argc, char* argv[]){
 	if ( 1 + argc - flagsPassed == 2 ){
 		printf("archivo o stdin\n");
 		printf("es el %s", argv[1+argc-flagsPassed]);
-		fd = open(argv[argc+flagsPassed-i],'r');
+		fd = open(argv[argc+flagsPassed-i], O_RDONLY, S_IRUSR|S_IWUSR);
 		wc(fd, lines, words ,bytes);
 		printf("Lines: %d \t words: %d \t bytes: %d \n",*lines,*words,*bytes);
 	}
