@@ -9,7 +9,7 @@ EXEC:= tp1
 
 all: $(EXEC)
 
-$(EXEC): main.o arg_parse.o wc.o
+$(EXEC): main.o arg_parse.o assembly
 	$(CC) $(CFLAGS) main.o arg_parse.o wc.o -o $(EXEC)
 
 valgrind: $(EXEC)
@@ -21,5 +21,5 @@ clean:
 assembly:
 	#main.o arg_parse.o
 	gcc -c assembly/wc.S -o wc.o
-	gcc -c assembly/count.S -o count.o
+	gcc -c count.S -o count.o
 	#$(CC) $(CFLAGS) main.o arg_parse.o wc.o count.o -o tp1
