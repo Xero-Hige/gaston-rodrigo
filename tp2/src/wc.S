@@ -37,27 +37,59 @@ wc:
 	sw a2,$t2
 	sw a3,$t3
 
-	## abro el archivo 
-	#li v0,13 
-	#la a0, fname
-	#li a1, 0
-	#li a2, 0
-	#syscall
-	## guardo el fd
-	#move s0,v0
+	
+	#Seteo los acumuladores a 0
+	li		s1, 0
+	li		s2, 0
+	li		s3, 0
 
-	## leo el archivo 
-	#li v0, 14 
-	#move a0,s0
-	#la a1,buffer
-	#li a2,4 #leo 4 bytes
-	#syscall
-	#//printf("%d\n",a1)
+	# abro el archivo 
+	li v0,13 
+	la a0, fname
+	li a1, 0
+	li a2, 0
+	syscall
+	blt		v0, zero, open_error	# Error de apertura	
+	move s0,v0
 
+read_byte:
+	li		v0, 14			# Syscall para leer archivo
+	move		a0, s0			# Coloco el fp en a0
+	la		a1, byte_buffer		# Coloco la direccion del buffer donde se lee
+	li		a2, 1			# Coloco la cantidad de bytes a leer
+	syscall					# Leo 1 byte
+	blt		v0, zero, error		# Salto al error durante la lectura
+	beq		v0, zero, end_read	# Salto al fin de la lectura si se termino de leer
+	addi		s3, s3, 1		# Aumento 1 al conteo de bytes leidos
 
+	la		t1, byte_buffer 	# Cargo la direccion de lo leido
+	lbu		s4, 0(t1)		# Cargo lo leido en el registro
 
+	#COUNT(char,int*,int*)
 
+	j		read_byte		# Vuelvo a leer
 
+error:
+	# Guardo un valor de error en los acumuladores
+	li		s1, -1			# Guardo -1 en el acumulador de lineas (error)
+	li		s2, -1			# Guardo -1 en el acumulador de palabras (error)
+	li		s3, -1			# Guardo -1 en el acumulador de bytes (error)
+
+end_read:
+	# Recupero las direcciones de almacenamiento
+	lw		a1, 68($fp)		# int lines
+	lw		a2, 72($fp)		# int words
+	lw		a3, 76($fp)		# int bytes
+
+	# Guardo los acumuladores en los punteros
+	sw		s1, 0(a1)		# Guardo el acumulador de lineas
+	sw		s2, 0(a2)		# Guardo el acumulador de palabras
+	sw		s3, 0(a3)		# Guardo el acumulador de bytes
+
+	# Cierro el archivo
+	move		a0, s0			# Guardo el fd en el parametro
+	li		v0, 16			# Syscall para cerrar el archivo
+	syscall
 
 fin: 
 	move sp, $fp
@@ -76,3 +108,7 @@ fin:
 	addiu sp,sp,64
 	jr ra
 
+
+.data
+
+byte_buffer:	.space	1
