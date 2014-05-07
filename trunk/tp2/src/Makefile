@@ -19,7 +19,5 @@ clean:
 	$(RM) *.o assembly/*.o $(EXEC)
 
 assembly:
-	#main.o arg_parse.o
-	gcc -c assembly/wc.S -o wc.o
+	gcc -c wc.S -o wc.o
 	gcc -c count.S -o count.o
-	#$(CC) $(CFLAGS) main.o arg_parse.o wc.o count.o -o tp1
