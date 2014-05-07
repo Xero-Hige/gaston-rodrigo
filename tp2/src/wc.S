@@ -65,9 +65,13 @@ read_byte:
 	la		t1, byte_buffer 	# Cargo la direccion de lo leido
 	lbu		s4, 0(t1)		# Cargo lo leido en el registro
 
-	#COUNT(char,int*,int*)
+	#void count(char c, int* lines, int* words)
+	move		a0, t1			# Cargo el char leido en el parametro 0
+	move		a1, s1			# Cargo el contador de lineas en el parametro 1
+	move		a2, s2			# Cargo el contador de palabras en el parametro 2
+	jal			count			# Llamo al count
 
-	j		read_byte		# Vuelvo a leer
+	j			read_byte		# Vuelvo a leer
 
 error:
 	# Guardo un valor de error en los acumuladores
