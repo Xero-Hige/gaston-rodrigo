@@ -1,0 +1,119 @@
+% ------ Clase de documento ------
+\documentclass[a4paper,10pt,oneside]{article}
+
+% ------ Paquetes ------
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[activeacute,spanish]{babel}
+
+% ------ Configuración ------
+\title{\textbf{Trabajo Práctico 1: Conjunto de instrucciones MIPS}}
+
+\author{    Burdet Rodrigo, \textit{Padrón Nro. 93440}\\
+            \texttt{ rodrigoburdet@gmail.com}\\\\
+            Romani Nazareno, \textit{Padrón Nro. 83991}                     \\
+            \texttt{ nazareno.romani@gmail.com}\\\\
+            Martinez Gaston Alberto, \textit{Padrón Nro. 91383}                     \\
+            \texttt{ gaston.martinez.90@gmail.com }\\\\[2.5ex]
+            \normalsize{1er. Cuatrimestre de 2014}                       \\
+            \normalsize66.20 Organización de Computadoras\\
+            \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
+       }
+\date{\today}
+
+
+
+% ----- Cuerpo del documento -----
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+
+\newpage
+
+\section{Objetivos}
+	Familiarizarse con la programación en assembly y el concepto de ABI, implementando
+una versión simplificada del programa wc[1]
+
+\section{Resumen}
+	En este trabajo práctico se pretende familiarizarse con la programación 
+en assembler \textsl{MIPS} y con la \textsl{ABI} (Application Binary 
+Interface).
+
+Se utilizará \textsl{GXemul} para simular una máquina \textsl{MIPS} 
+corriendo una versión reciente del sistema operativo \textsl{NetBSD}.
+
+El programa implementado, escrito en lenguaje \textsl{C}, cuenta la 
+cantidad de palabras, líneas y caracteres de uno o mas archivos o cuenta
+ lo ingresado por stdin en caso de no recibir archivos,
+e imprime esas cantidades por stdout.
+
+Se procedera a implementar las funciones wc(int fd) y count(char c) en 
+\textsl{MIPS}. La primera debe leer del archivo correspondiente, mientras
+que la segunda realiza el conteo.
+	
+\section{Desarrollo}
+	A continuación veremos los pasos que se siguieron para hacer el trabajo práctico.
+	
+	\subsection{Paso 1: Configuración de Entorno de Desarrollo}
+	El primer paso fue configurar el entorno de desarrollo, de acuerdo a la guía facilitada por la cátedra. Trabajamos con la distribución de linux basada en Debian.
+	Se realizó posteriormente la instalación de GxEmul utilizando el proporcionado por la cátedra, el cual traía ya configurado NetBSD.
+	
+	\subsection{Paso 2: Implementación del programa}
+	El programa debe ejecutarse por línea de comando y la salida del mismo dependerá del valor de los argumentos con los que se lo haya invocado.
+	\subsubsection{Ingreso de parámetros}
+		El formato para invocar al programa es el siguiente:
+		\begin{center}
+			./tp1 [OPTIONS] [FILE...]
+		\end{center}
+	Los parámetros válidos que puede recibir el programa son los siguientes: 
+	
+	\begin{ttfamily}
+	\begin{tabular}{lll}
+
+	\bf{-w,} & \bf{--words} &(Print the number of words). \\
+	\bf{-l,} & \bf{--lines} &(Print the number of lines).\\
+	\bf{-c,} & \bf{--input file} &(Print the number of bytes).\\
+	\bf{-v,} & \bf{--version} &(Print version and quit).\\
+	\bf{-h,} & \bf{--help} &(Print this information and quit).\\
+	\end{tabular}
+	\end{ttfamily}
+	
+	En caso de recibir un parámetro diferente a alguno de los listados anteriormente, 
+	la salida del programa será la misma que la de la opción -h, para despejar posibles dudas de uso.
+		
+	\subsubsection{Interpretación de parámetros}
+		Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. Se puede conocer más en detalle el funcionamiento de las mismas, a través de la documentación incluida en dicho archivo. Estas funciones permiten recoger los parámetros de entrada del programa y ejecutar la funcionalidad correspondiente. Estas son compatibles con NetBSD.
+			
+	\section{Código para compilar el programa con gcc}
+	
+Para poder compilar el proyecto, se debe abrir una terminal Linux dentro del directorio donde se encuentra el código fuente escrito en C, y ejecutar el script \textit{Makefile} con el comando \texttt{make} \footnote{Requiere tener instalado el programa \it{Make} y el compilador \it{GCC}}. Este comando ejecuta las directivas definidas en el archivo \texttt{Makefile} generado para tal caso. 
+
+Esto generara un archivo ejecutable, llamado \textit{tp1} \footnote{El nombre del ejecutable se puede editar desde el script o desde la consola al invocar \texttt{make}}.  Tambien se puede ejecutar el comando \texttt{make Valgrind} para compilar el programa y correrlo con \textit{Valgrind}, de manera de poder depurarlo en modo interactivo.
+	
+\section{ Diagrama del stack de la funciones implementadas}
+
+
+\section{Corridas de prueba y Mediciones}
+
+En las figuras que siguen a continuación se muestran los comandos utilizados para ejecutar el programa y se puede apreciar los resultados de las diferentes pruebas que realizamos.
+	
+	\newpage
+	
+
+	
+\section{Conclusiones}	
+Con la realización de este trabajo práctico hemos aprendido a programar en \textit{Assembly} para \textit{MIPS32}. 
+Nos hemos familiarizado con las instrucciones utilizadas en el mismo, sus registros y el manejo de la \textit{ABI}.
+La mayor dificultad con la que nos hemos encontrado fue el armado del \textit{Stack Frame} para cada función, el manejo del pasaje de argumentos, linkear nuestro código \textit{Assembly} con el código \textit{C} y, por último, la más importante, el manejo de archivos en \textit{Assembly}.
+
+	
+% Citas bibliográficas.
+\begin{thebibliography}{99}
+
+\bibitem{[1]} \textbf{ http://en.wikipedia.org/wiki/Wc\_(Unix)}
+
+\end{thebibliography}
+
+\end{document}
+
