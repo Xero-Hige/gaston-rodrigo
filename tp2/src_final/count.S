@@ -55,9 +55,8 @@ es_linea:
 
 fin_count: 
 #Guardo los contadores
-	sw s0, 0(a1)
-	sw s1, 0(a2)
-	sw s2, 0(a3)
+	sw s0, 0(a2)
+	sw s1, 0(a3)
 
 	move sp, $fp
 	lw $fp,20(sp)
