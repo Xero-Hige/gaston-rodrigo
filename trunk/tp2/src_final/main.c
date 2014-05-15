@@ -39,6 +39,7 @@ int main(int argc, char* argv[]){
 	ParseArg_addArg(args, NULL, 'c', "bytes", NULL, 0);
 	ParseArg_parse(args, argc, argv);
 
+
 	if( !(ParseArg_getArg(args,'V')) || !(ParseArg_getArg(args,'h')) || !(ParseArg_getArg(args,'w')) || !(ParseArg_getArg(args,'l') || !(ParseArg_getArg(args,'c')))){
 		fprintf(stderr,"Parametro invalido. Ingrese -h para mostrar la ayuda\n");
 		return 1;
@@ -87,6 +88,7 @@ int main(int argc, char* argv[]){
 			wordsTotal = wordsTotal + words;
 			bytesTotal = bytesTotal + bytes;
 			printf("Lines: %d \t words: %d \t bytes: %d \t file: %s \n",lines,words,bytes,file);
+
 		}
 		printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
 	}
@@ -105,4 +107,22 @@ int main(int argc, char* argv[]){
 	ParseArg_delete(args);
 
 	return 0;
+}
+
+void version(char* nombre){
+	printf("%s 1.0.0\n", nombre);
+}
+
+void usage(char* nombre){
+	printf("Usage:\n");
+	printf("  %s -h \n",nombre);
+	printf("  %s -V \n",nombre);
+	printf("  %s [options] [file...] \n",nombre);
+	printf("Options: \n");
+	printf("  -V, --version Print version and quit.\n");
+
+	printf("  -h, --help \t Print this information and quit.\n");
+	printf("  -w, --words \t Print the number of words.\n");
+	printf("  -l, --lines \t Print the number of lines.\n");
+	printf("  -c, --bytes \t Print the number of bytes.\n");
 }
