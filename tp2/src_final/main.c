@@ -14,9 +14,10 @@ void wc(int fd, int* lines, int* words, int* bytes); void version(char* nombre);
 
 int main(int argc, char* argv[]){
 	if (argc < 2){
-		fprintf(stderr,"No se especifico ningun comando\n");
+		fprintf(stderr,"No se especifico ningun comando. Ingrese -h para mostrar la ayuda\n");
 		return 1;
 	}
+
 	TParseArg* args;
 	char *input = NULL;
 	int* res = NULL;
@@ -36,8 +37,12 @@ int main(int argc, char* argv[]){
 	ParseArg_addArg(args, NULL, 'w', "words", NULL, 0);
 	ParseArg_addArg(args, NULL, 'l', "lines", NULL, 0);
 	ParseArg_addArg(args, NULL, 'c', "bytes", NULL, 0);
-	//ParseArg_addArg(args, &ParseArg_parseStr, " ", "", NULL, 0);
 	ParseArg_parse(args, argc, argv);
+
+	if( !(ParseArg_getArg(args,'V')) || !(ParseArg_getArg(args,'h')) || !(ParseArg_getArg(args,'w')) || !(ParseArg_getArg(args,'l') || !(ParseArg_getArg(args,'c')))){
+		fprintf(stderr,"Parametro invalido. Ingrese -h para mostrar la ayuda\n");
+		return 1;
+	}
 
 	if(ParseArg_getArg(args, 'h')){
 		flagsPassed++;
@@ -46,111 +51,58 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 
-	if(ParseArg_getArg(args, 'l')){
-		flagsPassed++;
-		printf("l\n");
-		//ParseArg_delete(args);
-		//return 0;
-	}
-
-
-	if(ParseArg_getArg(args, 'w')){
-		flagsPassed++;
-		printf("w\n");
-		//ParseArg_delete(args);
-		//return 0;
-	}
-
-
-	if(ParseArg_getArg(args, 'c')){
-		flagsPassed++;
-		printf("c\n");
-		//ParseArg_delete(args);
-		//return 0;
-	}
-
 	if(ParseArg_getArg(args, 'V')){
 		flagsPassed++;
-		printf("V\n");
 		version(argv[0]);
 		ParseArg_delete(args);
 		return 0;
 	}
 
+	if(ParseArg_getArg(args, 'l')){
+		flagsPassed++;
+	}
 
-	//Si no tengo argumentos tengo que leer de stdin y hacer todo
-	if (argc == 1 ){
-		//CONTAR BYTES, PALABRAS Y LINEAS DEL ARCHIVO STDIN
+
+	if(ParseArg_getArg(args, 'w')){
+		flagsPassed++;
+	}
+
+
+	if(ParseArg_getArg(args, 'c')){
+		flagsPassed++;
 	}
 
 	//Si la diferencia entre argumentos y flags es mayor a 2 entonces
 	//tengo mas de 1 archivo y los leo todos 
-	printf("flags %d\n",flagsPassed);
 	if ( 1 + argc - flagsPassed > 2 ){
+		int linesTotal = 0;
+		int wordsTotal = 0;
+		int bytesTotal = 0;
 		for ( i = flagsPassed+1 ; i < argc ; i++ ){
-			//printf("en i: %d %s \n",i, argv[argc+flagsPassed-i]);
+			char* file;
+			file = argv[argc+flagsPassed-i];
 			fd = open(argv[argc+flagsPassed-i],O_RDONLY);
 			wc(fd, &lines, &words ,&bytes);
-			printf("Lines: %d \t words: %d \t bytes: %d \n",lines,words,bytes);
+			linesTotal = linesTotal + lines;
+			wordsTotal = wordsTotal + words;
+			bytesTotal = bytesTotal + bytes;
+			printf("Lines: %d \t words: %d \t bytes: %d \t file: %s \n",lines,words,bytes,file);
 		}
+		printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
 	}
 
 	//Si la diferencia es 2, puede ser un archivo o stdin
-	//TODO: Poner en el informe que los archivos siempre van dsp de los argumentos 
 	if ( 1 + argc - flagsPassed == 2 ){
-		printf("archivo o stdin\n");
-		printf("es el %s", argv[1+argc-flagsPassed]);
+		char* file;
+		file = argv[1+argc-flagsPassed];
 		fd = open(argv[argc+flagsPassed-i],O_RDONLY);
 		wc(fd, &lines, &words ,&bytes);
-		printf("Lines: %d \t words: %d \t bytes: %d \n",lines,words,bytes);
+		printf("Lines: %d \t words: %d \t bytes: %d  \t file: %s \n",lines,words,bytes,file);
 	}
-
-	//input = (char*) ParseArg_getArg(args, ' ');
-	
-
-	//if(input == NULL){
-	//	printf("es stdin\n");
-	//	inFile = stdin;
-	//}else{
-	//	printf("es archivo \n");
-	//	inFile = fopen(input, "r");
-	//	if(!inFile){
-	//		free(input);
-	//		ParseArg_delete(args);
-	//		return 1;
-	//	}
-	//}
-
-//	if(inFile != stdin)
-//		fclose(inFile);
-
-	if( !(ParseArg_getArg(args,'V')) || !(ParseArg_getArg(args,'h')) || !(ParseArg_getArg(args,'w')) || !(ParseArg_getArg(args,'l') || !(ParseArg_getArg(args,'c')))){
-		fprintf(stderr,"Parametro invalido\n");
-		return 1;
-	}
-
 
 	free(res);
 	free(input);
 	ParseArg_delete(args);
 
 	return 0;
-}
-
-void version(char* nombre){
-	printf("%s 1.0.0\n", nombre);
-}
-
-void usage(char* nombre){
-	printf("Usage:\n");
-	printf("  %s -h \n",nombre);
-	printf("  %s -V \n",nombre);
-	printf("  %s [options] [file...] \n",nombre);
-	printf("Options: \n");
-	printf("  -V, --version Print version and quit.\n");
-
-	printf("  -h, --help \t Print this information and quit.\n");
-	printf("  -w, --words \t Print the number of words.\n");
-	printf("  -l, --lines \t Print the number of lines.\n");
-	printf("  -c, --bytes \t Print the number of bytes.\n");
 }
