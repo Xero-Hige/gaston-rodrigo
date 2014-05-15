@@ -78,9 +78,10 @@ que la segunda realiza el conteo.
 	\bf{-h,} & \bf{--help} &(Print this information and quit).\\
 	\end{tabular}
 	\end{ttfamily}
-	
-	En caso de recibir un parámetro diferente a alguno de los listados anteriormente, 
-	la salida del programa será la misma que la de la opción -h, para despejar posibles dudas de uso.
+	\\\\
+	En caso de recibir un parámetro diferente a alguno de los listados anteriormente, o no recibir ninguno,  
+	se muestra mensaje para el ingreso de la opción -h, para despejar posibles dudas de uso.\\
+	Los nombres de los archivos ingresados van siempre luego de los argumentos.
 		
 	\subsubsection{Interpretación de parámetros}
 		Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. Se puede conocer más en detalle el funcionamiento de las mismas, a través de la documentación incluida en dicho archivo. Estas funciones permiten recoger los parámetros de entrada del programa y ejecutar la funcionalidad correspondiente. Estas son compatibles con NetBSD.
@@ -93,41 +94,19 @@ Esto generara un archivo ejecutable, llamado \textit{tp1} \footnote{El nombre de
 	
 \section{ Diagrama de stack de la funciones MIPS}
 
-wc/count\\\\
--------------\\
-ra	59\\
-	52\\
--------------\\
-fp	55\\
-	52\\
--------------\\
-gp	51\\
-	48\\
--------------\\
-s7	47\\
-	44\\
--------------\\
-s6	43\\
-	40\\
--------------\\
-s5	39\\
-	36\\
--------------\\
-s4	35\\
-	32\\
--------------\\
-s3	31\\
-	28\\
--------------\\
-s2	27\\
-	24\\
--------------\\
-s1	23\\
-	20\\
--------------\\
-s0	19\\
-	16\\
--------------\\
+	\begin{figure}[!htp]
+			\begin{center}
+				\includegraphics[width=0.50\textwidth]{stack_count.png}
+			\end{center}
+			\caption{Stack Frame de la función COUNT programada en MIPS} \label{Stack frame - Count}
+	\end{figure}
+	\newpage
+	\begin{figure}[!htp]
+				\begin{center}
+					\includegraphics[width=0.50\textwidth]{stack_count.png}
+				\end{center}
+				\caption{Stack Frame de la función COUNT programada en MIPS} \label{Stack frame - Count}
+	\end{figure}
 
 \section{Corridas de prueba y Mediciones}
 
