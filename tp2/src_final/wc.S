@@ -34,7 +34,7 @@ wc:
 	move s2, a3		# s2 = bytes
 
 	# pongo contadores en 0
-	sw	zero,0(s0)			
+	sw	zero,0(s0)
 	sw	zero,0(s1)
 	sw	zero,0(s2)
 	move s4, zero	# s4 = letra anterior
@@ -43,24 +43,24 @@ wc:
 read_byte:
 	li v0, SYS_read
 	lw a0, 64($fp)		# cargo el fd
-	la a1,byte_buffer
+	la a1, byte_buffer
 	li a2, 1
-	syscall 		 
+	syscall
 
 	beq v0,zero,end_read # si es 0 es xq llegue al fin de archivo, termine
 
 	lw	t1,0(s2)
-	addi t1,t1,1
+	addiu t1,t1,1
 	sw	t1,0(s2)
 
 	#preparo llamada al count:
 
 	lbu  a0,byte_buffer	# a0 = letra 
-	move a1,s4		# a1 = letraAnterior
-	move a2,s1		# a1 = lines
-	move a3,s2		# a2 = words 
+	move a1,s4			# a1 = letraAnterior
+	move a2,s0			# a2 = lines
+	move a3,s1			# a3 = words 
 
-	#void count(char c, int* lines, int* words)
+	#void count(char c, char ant,  int* lines, int* words)
 
 	jal count
 	move s4,a0		# s4 (letraAnterior) = letra
@@ -82,7 +82,7 @@ end_read:
 	lw s0,16(sp)
 
 	addiu sp,sp,64
-	jr ra
+		jr ra
 
 
 .end wc
