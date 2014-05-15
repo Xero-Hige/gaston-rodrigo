@@ -86,9 +86,10 @@ int main(int argc, char* argv[]){
 
 	// Supongo que los archivos siempre estan al final (dsp de los argumentos)
 	// Loopeo por todos los archivos 
-	for ( i = flagsPassed+1 ; i < argc ; i++ ){
+	for ( i = flagsPassed +1; i < argc ; i++ ){
 		char* file;
 		file = argv[argc+flagsPassed-i];
+		printf("%s\n",file);
 		fd = open(argv[argc+flagsPassed-i],O_RDONLY);
 		wc(fd, &lines, &words ,&bytes);
 

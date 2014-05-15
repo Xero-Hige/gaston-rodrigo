@@ -47,7 +47,7 @@ read_byte:
 	li a2, 1
 	syscall 		 
 
-	beq t1,zero,end_read # si es 0 es xq llegue al fin de archivo, termine
+	beq v0,zero,end_read # si es 0 es xq llegue al fin de archivo, termine
 
 	lw	t1,0(s2)
 	addi t1,t1,1

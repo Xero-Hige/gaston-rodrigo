@@ -31,9 +31,9 @@ count:
 	bgt		a0, t1, es_linea	# Si es mayor a ' ' no puede ser un separador
 
 	li		t1, 32			# Cargo el valor entero de ' '
-	blt		a1, t1, es_linea	# Si es menor a ' ' no habia una palabra
+	ble		a1, t1, es_linea	# Si es menor a ' ' no habia una palabra
 
-	addu	s1, s1, 1		# Aumento en 1 el conteo de palabras
+	addiu	s1, s1, 1		# Aumento en 1 el conteo de palabras
 
 
 #	TODO : Asi como esta falta contemplar los siguientes casos: 
@@ -50,11 +50,12 @@ count:
 es_linea:
 	li		t1, 10			# Cargo el valor entero de '\n' (Nueva linea)
 	bne		a0, t1, fin_count	# Salto si no es una nueva linea
-	addu	s0, s0, 1		# Aumento 1 el contador de lineas
+	addiu	s0, s0, 1		# Aumento 1 el contador de lineas
 	j fin_count
 
 fin_count: 
 #Guardo los contadores
+
 	sw s0, 0(a2)
 	sw s1, 0(a3)
 
