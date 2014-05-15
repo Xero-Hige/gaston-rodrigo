@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 
 
 	//Si no tengo ninguno de los argumentos y tengo un -, entonces parametro invalido
-	if( !(ParseArg_getArg(args,'V')) && !(ParseArg_getArg(args,'h')) && !(ParseArg_getArg(args,'w')) && !(ParseArg_getArg(args,'l') && !(ParseArg_getArg(args,'c')))){
+	if( !(ParseArg_getArg(args,'V')) && !(ParseArg_getArg(args,'h')) && !(ParseArg_getArg(args,'w')) && !(ParseArg_getArg(args,'l')) && !(ParseArg_getArg(args,'c'))){
 		for ( i = 0 ; i < argc ; i++ ){ if (argv[i][0]=='-'){
 				fprintf(stderr,"Parametro invalido. Ingrese -h para mostrar la ayuda\n");
 				return 1;
@@ -86,10 +86,9 @@ int main(int argc, char* argv[]){
 
 	// Supongo que los archivos siempre estan al final (dsp de los argumentos)
 	// Loopeo por todos los archivos 
-	for ( i = flagsPassed +1; i < argc ; i++ ){
+	for ( i = flagsPassed+1 ; i < (argc) ; i++ ){
 		char* file;
-		file = argv[argc+flagsPassed-i];
-		printf("%s\n",file);
+		file = argv[i];
 		fd = open(argv[argc+flagsPassed-i],O_RDONLY);
 		wc(fd, &lines, &words ,&bytes);
 
@@ -102,7 +101,7 @@ int main(int argc, char* argv[]){
 		}
 
 		if(ParseArg_getArg(args, 'c')){
-			printf("bytes: %d \t ",words);
+			printf("bytes: %d \t ",bytes);
 		}
 
 		//Por defecto ejecuta esta 
@@ -122,9 +121,9 @@ int main(int argc, char* argv[]){
 		bytesTotal = bytesTotal + bytes;
 
 	}
-	printf("Lines: %d \t words: %d \t bytes: %d \ttotal\n",linesTotal,wordsTotal,bytesTotal);
+	//printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
 
-	ParseArg_delete(args);
+	//ParseArg_delete(args);
 
 	return 0;
 }
