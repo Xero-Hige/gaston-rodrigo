@@ -27,6 +27,9 @@ int main(int argc, char* argv[]){
 	int words=0;
 	int bytes=0;
 	int flagsPassed = 0;
+	int flagPrintLines=1;
+	int flagPrintWords=1;
+	int flagPrintBytes=1;
 
 	// Creo el parseador de argumentos
 	args = ParseArg_new(5);
@@ -38,7 +41,6 @@ int main(int argc, char* argv[]){
 	ParseArg_addArg(args, NULL, 'l', "lines", NULL, 0);
 	ParseArg_addArg(args, NULL, 'c', "bytes", NULL, 0);
 	ParseArg_parse(args, argc, argv);
-
 
 	if( !(ParseArg_getArg(args,'V')) || !(ParseArg_getArg(args,'h')) || !(ParseArg_getArg(args,'w')) || !(ParseArg_getArg(args,'l') || !(ParseArg_getArg(args,'c')))){
 		fprintf(stderr,"Parametro invalido. Ingrese -h para mostrar la ayuda\n");
@@ -61,16 +63,17 @@ int main(int argc, char* argv[]){
 
 	if(ParseArg_getArg(args, 'l')){
 		flagsPassed++;
+		flagPrintLines=0;
 	}
-
 
 	if(ParseArg_getArg(args, 'w')){
 		flagsPassed++;
+		flagPrintWords=0;
 	}
-
 
 	if(ParseArg_getArg(args, 'c')){
 		flagsPassed++;
+		flagPrintBytes=0;
 	}
 
 	//Si la diferencia entre argumentos y flags es mayor a 2 entonces
@@ -87,10 +90,27 @@ int main(int argc, char* argv[]){
 			linesTotal = linesTotal + lines;
 			wordsTotal = wordsTotal + words;
 			bytesTotal = bytesTotal + bytes;
-			printf("Lines: %d \t words: %d \t bytes: %d \t file: %s \n",lines,words,bytes,file);
-
+			if (flagPrintLines) {
+				printf("\n %d ",lines);
+			}
+			if (flagPrintWords) {
+				printf(" %d ",words);
+			}
+			if (flagPrintBytes) {
+				printf(" %d ",bytes);
+			}
+			printf(" %s \n", file);
 		}
-		printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
+		if (flagPrintLines) {
+			printf(" %d ",linesTotal);
+		}
+		if (flagPrintWords) {
+			printf(" %d ",wordsTotal);
+		}
+		if (flagPrintBytes) {
+			printf(" %d ",bytesTotal);
+		}
+		printf(" total \n");
 	}
 
 	//Si la diferencia es 2, puede ser un archivo o stdin
@@ -99,7 +119,16 @@ int main(int argc, char* argv[]){
 		file = argv[1+argc-flagsPassed];
 		fd = open(argv[argc+flagsPassed-i],O_RDONLY);
 		wc(fd, &lines, &words ,&bytes);
-		printf("Lines: %d \t words: %d \t bytes: %d  \t file: %s \n",lines,words,bytes,file);
+		if (flagPrintLines) {
+			printf("\n %d ",lines);
+		}
+		if (flagPrintWords) {
+			printf(" %d ",words);
+		}
+		if (flagPrintBytes) {
+			printf(" %d ",bytes);
+		}
+		printf(" %s \n", file);
 	}
 
 	free(res);
