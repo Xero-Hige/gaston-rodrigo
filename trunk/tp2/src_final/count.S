@@ -53,7 +53,7 @@ es_linea:
 	addiu	s0, s0, 1		# Aumento 1 el contador de lineas
 	j fin_count
 
-fin_count: 
+fin_count:
 #Guardo los contadores
 
 	sw s0, 0(a2)
