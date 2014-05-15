@@ -1,6 +1,6 @@
 #include <mips/regdef.h>
 
-#void count(char c, int* lines, int* words)
+#void count(char c, char c, int* lines, int* words)
 .text
 .align 2
 .globl count
@@ -18,22 +18,23 @@ count:
 
 	# guardo parametros que usa la funcion
 	sw a0,24($fp) #char c
-	sw a1,28($fp) #int* lines
-	sw a2,32($fp) #int* words
-	sw a3,36($fp) #int* bytes
+	sw a1,28($fp) #char c
+	sw a2,32($fp) #int* lines
+	sw a3,36($fp) #int* words
 
-	lw s0, 0(a1) #int* lines
-	lw s1, 0(a2) #int* words
-	lw s2, 0(a3)
-
-	addu s2,s2, 1				# Si entro aca siempre tengo que sumar 1
-
+	lw s0, 0(a2)  #int* lines
+	lw s1, 0(a3)  #int* words
 
 	li		t1, 9			# Cargo el valor entero de '\t'
 	blt		a0, t1, fin_count	# Si es menor a '\t' no puede ser un separador
-	li		t1, 32			# Cargo el valor entero de \"v"
-	bne		a0, t1, es_linea	# Si es mayor a '\v' no puede ser un separador
+	li		t1, 32			# Cargo el valor entero de ' '
+	bgt		a0, t1, es_linea	# Si es mayor a ' ' no puede ser un separador
+
+	li		t1, 32			# Cargo el valor entero de ' '
+	blt		a1, t1, es_linea	# Si es menor a ' ' no habia una palabra
+
 	addu	s1, s1, 1		# Aumento en 1 el conteo de palabras
+
 
 #	TODO : Asi como esta falta contemplar los siguientes casos: 
 #	- Un fin de linea tmb puede significar el fin de una palabra, por lo 
@@ -67,3 +68,5 @@ fin_count:
 
 	addiu sp,sp,24
 	jr ra
+
+
