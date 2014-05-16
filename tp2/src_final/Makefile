@@ -7,10 +7,16 @@ EXEC:= tp1
 
 .PHONY: clean all assembly
 
-all: $(EXEC)
+#all: $(EXEC)
 
-$(EXEC): main.o arg_parse.o assembly
-	$(CC) $(CFLAGS) main.o arg_parse.o wc.o count.o -o $(EXEC)
+#$(EXEC): main.o arg_parse.o wc.o
+#	$(CC) $(CFLAGS) main.o arg_parse.o wc.o count.o -o $(EXEC)
+
+all: 
+	gcc -c arg_parse.c -o arg_parse.o
+	gcc -c wc.c -o wc.o
+	gcc -c main.c -o main.o
+	gcc wc.o arg_parse.o main.o -o $(EXEC)
 
 valgrind: $(EXEC)
 	valgrind $(VFLAGS) ./$(EXEC) -e
@@ -21,3 +27,6 @@ clean:
 assembly:
 	gcc -c wc.S -o wc.o
 	gcc -c count.S -o count.o
+	gcc -c arg_parse.c -o arg_parse.o
+	gcc -c main.c -o main.o
+	gcc wc.o count.o arg_parse.o main.o -o $(EXEC)
