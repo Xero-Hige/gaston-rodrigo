@@ -36,17 +36,6 @@ count:
 	addiu	s1, s1, 1		# Aumento en 1 el conteo de palabras
 
 
-#	TODO : Asi como esta falta contemplar los siguientes casos: 
-#	- Un fin de linea tmb puede significar el fin de una palabra, por lo 
-#	tnato un eof tmb tiene q sumar una palabra si lo ultimo q se leyo fue 
-#	una letra y no un espacio: 
-#Ej:
-# "prueba\n
-# "deberia_contar_2"
-
-#	-Muchos espacios seguidos no tienen que sumar nada, para eso se necesita
-#	al igual que en el caso anterior, guardar la ultima letra leida
-
 es_linea:
 	li		t1, 10			# Cargo el valor entero de '\n' (Nueva linea)
 	bne		a0, t1, fin_count	# Salto si no es una nueva linea

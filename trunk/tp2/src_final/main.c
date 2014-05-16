@@ -19,7 +19,8 @@ int main(int argc, char* argv[]){
 	}
 
 	TParseArg* args;
-	int fd;
+	char* file;
+	int fd = 1;
 	int i=0;
 	int lines=0;
 	int words=0;
@@ -48,7 +49,6 @@ int main(int argc, char* argv[]){
 	}
 
 
-	
 	if(ParseArg_getArg(args, 'h')){
 		flagsPassed++;
 		usage(argv[0]);
@@ -67,11 +67,9 @@ int main(int argc, char* argv[]){
 		flagsPassed++;
 	}
 
-
 	if(ParseArg_getArg(args, 'w')){
 		flagsPassed++;
 	}
-
 
 	if(ParseArg_getArg(args, 'c')){
 		flagsPassed++;
@@ -84,45 +82,70 @@ int main(int argc, char* argv[]){
 	int wordsTotal = 0;
 	int bytesTotal = 0;
 
+
+	if ( argc -1 == flagsPassed ){
+		fd = 0;
+		file = "";
+	}
+
 	// Supongo que los archivos siempre estan al final (dsp de los argumentos)
 	// Loopeo por todos los archivos 
-	for ( i = flagsPassed+1 ; i < (argc) ; i++ ){
-		char* file;
-		file = argv[i];
-		//printf("%d___%d\n",i,argc);
-		fd = open(file,O_RDONLY);
+	i = flagsPassed +1 ;
+	while ( i < argc || fd == 0){
+
+		if (fd !=0){
+			file = argv[i];
+			fd = open(file,O_RDONLY);
+		}
+		
 		wc(fd, &lines, &words ,&bytes);
 
 		if(ParseArg_getArg(args, 'l')){
-			printf("Lines: %d \t ",lines);
+			printf("%d \t ",lines);
 		}
 
 		if(ParseArg_getArg(args, 'w')){
-			printf("words: %d \t ",words);
+			printf("%d \t ",words);
 		}
 
 		if(ParseArg_getArg(args, 'c')){
-			printf("bytes: %d \t ",bytes);
+			printf("%d \t ",bytes);
 		}
 
 		//Por defecto ejecuta esta 
 		if (flagsPassed==0){
-			printf("Lines: %d \t words: %d \t bytes: %d \t",lines,words,bytes);
+			printf("%d \t %d \t%d \t",lines,words,bytes);
 		}
-
-		//Stdin:
-		if (fd==-1){
-			file = "";
-		}
-
+		
 		printf("%s \n",file);
 
 		linesTotal = linesTotal + lines;
 		wordsTotal = wordsTotal + words;
 		bytesTotal = bytesTotal + bytes;
-
+		i++;
+		fd = 1;
 	}
-	printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
+	//Imprime TOTAL cuando hay mas de 1 archivo
+	if (argc - flagsPassed > 2){
+		if(ParseArg_getArg(args, 'l')){
+			printf("%d \t ",linesTotal);
+		}
+
+		if(ParseArg_getArg(args, 'w')){
+			printf("%d \t ",wordsTotal);
+		}
+
+		if(ParseArg_getArg(args, 'c')){
+			printf("%d \t ",bytesTotal);
+		}
+
+		if (flagsPassed==0){
+				printf("%d \t %d \t%d \t",linesTotal,wordsTotal,bytesTotal);
+		}
+
+		printf("total \n");
+	}
+	
 
 	ParseArg_delete(args);
 
