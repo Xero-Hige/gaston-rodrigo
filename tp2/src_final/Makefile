@@ -1,5 +1,5 @@
 CC:=gcc
-CFLAGS:= -std=c99 -pedantic -pedantic-errors -O3 -DNDEBUG -ggdb -DDEBUG -fno-inline -Wall #-Werror
+CFLAGS:= -std=c99 -pedantic -pedantic-errors -DNDEBUG -ggdb -DDEBUG -fno-inline -Wall #-Werror
 VFLAGS:= --track-origins=yes --leak-check=full --trace-children=yes --show-reachable=yes -v
 
 RM:= rm -fr

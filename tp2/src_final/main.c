@@ -89,7 +89,8 @@ int main(int argc, char* argv[]){
 	for ( i = flagsPassed+1 ; i < (argc) ; i++ ){
 		char* file;
 		file = argv[i];
-		fd = open(argv[argc+flagsPassed-i],O_RDONLY);
+		//printf("%d___%d\n",i,argc);
+		fd = open(file,O_RDONLY);
 		wc(fd, &lines, &words ,&bytes);
 
 		if(ParseArg_getArg(args, 'l')){
@@ -121,9 +122,9 @@ int main(int argc, char* argv[]){
 		bytesTotal = bytesTotal + bytes;
 
 	}
-	//printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
+	printf("Lines: %d \t words: %d \t bytes: %d \t total\n",linesTotal,wordsTotal,bytesTotal);
 
-	//ParseArg_delete(args);
+	ParseArg_delete(args);
 
 	return 0;
 }
