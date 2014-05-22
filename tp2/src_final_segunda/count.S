@@ -27,12 +27,25 @@ count:
 
 	li		t1, 9			# Cargo el valor entero de '\t'
 	blt		a0, t1, fin_count	# Si es menor a '\t' no puede ser un separador
-	li		t1, 32			# Cargo el valor entero de ' '
-	bgt		a0, t1, es_linea	# Si es mayor a ' ' no puede ser un separador
+	li		t1, 13			# Cargo el valor entero de '\r'
+	ble		a0, t1, checkear_palabra # Si es menor o igual a '\r' puede ser una palabra
 
-	li		t1, 32			# Cargo el valor entero de ' '
-	ble		a1, t1, es_linea	# Si es menor a ' ' no habia una palabra
+	li		t1, 32			# Cargo el valor entero de " "
+	bneq	a0, t1, fin_count # No es un separador
 
+
+checkear_palabra:
+	li		t1, 32			# Cargo el valor entero de ' '
+	beq		a1, t1, es_linea	# Si es " " la anterior no habia una palabra
+
+	li		t1, 9			# Cargo el valor entero de '\t'
+	blt		a1, t1, es_palabra	# Si es menor a '\t' era una palabra
+
+	li		t1, 13			# Cargo el valor entero de '\r'
+	ble		a1, t1, es_linea	# Si es menor o igual a '\r' no puede ser una palabra
+
+
+es_palabra:
 	addiu	s1, s1, 1		# Aumento en 1 el conteo de palabras
 
 
@@ -40,7 +53,6 @@ es_linea:
 	li		t1, 10			# Cargo el valor entero de '\n' (Nueva linea)
 	bne		a0, t1, fin_count	# Salto si no es una nueva linea
 	addiu	s0, s0, 1		# Aumento 1 el contador de lineas
-	j fin_count
 
 fin_count:
 #Guardo los contadores
