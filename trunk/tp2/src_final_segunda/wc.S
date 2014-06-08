@@ -68,6 +68,21 @@ read_byte:
 
 
 end_read:
+	# Verifico si el ultimo caracter leido no fue un separador. Si es asi, sumo uno a la cantidad de palabras 
+    li		t1, 32			# Cargo el valor entero de ' '
+	beq		s4, t1, end_wc	# Si es " " la anterior no habia una palabra
+
+	li		t1, 9			# Cargo el valor entero de '\t'
+	blt		s4, t1, add_word	# Si es '\t' la anterior no habia una palabra
+
+	li		t1, 13			# Cargo el valor entero de '\r'
+	ble		s4, t1, end_wc	# Si es '\r' la anterior no habia una palabra
+
+add_word:
+	addiu   a3, a3, 1 # Sumo uno a la cantidad de palabras
+
+		
+end_wc:
 	move sp, $fp
 	lw ra,56(sp)
 	lw $fp,52(sp)

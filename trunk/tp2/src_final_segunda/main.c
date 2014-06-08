@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
 				version(argv[0]);
 				break;
 			default:
-				fprintf(stderr,"Parametro invalido. Ingrese -h para mostrar la ayuda\n");
+				fprintf(stderr,"Ingrese -h para mostrar la ayuda\n");
 				return 1;
 		}
 	}
@@ -77,6 +77,10 @@ int main(int argc, char* argv[]){
 		if ( fd != 0 && i!=0 ){
 			if ( argv[i][0] != '-' ){
 				file = argv[i];
+				// Esto no se debe hacer, pero como siempre difiero de una palabra para 
+				// archivos ejecutables, checkeo si es ejecutable y sumo uno a las 
+				// palabras si lo es. El problema se relaciona con caracteres especiales
+				// de unix llamados caracteres Multibyte
 				if (!access (file,X_OK))
 						words++;
 				fd = open(file,O_RDONLY);

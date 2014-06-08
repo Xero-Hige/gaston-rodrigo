@@ -31,7 +31,7 @@ count:
 	ble		a0, t1, checkear_palabra # Si es menor o igual a '\r' puede ser una palabra
 
 	li		t1, 32			# Cargo el valor entero de " "
-	bneq	a0, t1, fin_count # No es un separador
+	bne	a0, t1, fin_count # No es un separador
 
 
 checkear_palabra:
