@@ -1,696 +1,614 @@
-	.file	1 "arg_parse.c"
-	.section .mdebug.abi32
-	.previous
-	.abicalls
+	.file	"arg_parse.c"
 	.text
-	.align	2
 	.globl	ParseArg_new
-	.ent	ParseArg_new
+	.type	ParseArg_new, @function
 ParseArg_new:
-	.frame	$fp,48,$ra		# vars= 8, regs= 4/0, args= 16, extra= 8
-	.mask	0xd0010000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,48
-	.cprestore 16
-	sw	$ra,44($sp)
-	sw	$fp,40($sp)
-	sw	$gp,36($sp)
-	sw	$s0,32($sp)
-	move	$fp,$sp
-	sw	$a0,48($fp)
-	sw	$zero,24($fp)
-	lw	$v0,48($fp)
-	bne	$v0,$zero,$L18
-	sw	$zero,28($fp)
-	b	$L17
-$L18:
-	li	$a0,1			# 0x1
-	li	$a1,12			# 0xc
-	la	$t9,calloc
-	jal	$ra,$t9
-	sw	$v0,24($fp)
-	lw	$v1,24($fp)
-	lw	$v0,48($fp)
-	sw	$v0,0($v1)
-	lw	$s0,24($fp)
-	lw	$a0,48($fp)
-	li	$a1,28			# 0x1c
-	la	$t9,calloc
-	jal	$ra,$t9
-	sw	$v0,8($s0)
-	lw	$v0,24($fp)
-	sw	$v0,28($fp)
-$L17:
-	lw	$v0,28($fp)
-	move	$sp,$fp
-	lw	$ra,44($sp)
-	lw	$fp,40($sp)
-	lw	$s0,32($sp)
-	addu	$sp,$sp,48
-	j	$ra
-	.end	ParseArg_new
+.LFB2:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	movl	$0, -12(%ebp)
+	cmpl	$0, 8(%ebp)
+	jne	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movl	$12, 4(%esp)
+	movl	$1, (%esp)
+	call	calloc
+	movl	%eax, -12(%ebp)
+	movl	-12(%ebp), %eax
+	movl	8(%ebp), %edx
+	movl	%edx, (%eax)
+	movl	8(%ebp), %eax
+	movl	$28, 4(%esp)
+	movl	%eax, (%esp)
+	call	calloc
+	movl	%eax, %edx
+	movl	-12(%ebp), %eax
+	movl	%edx, 8(%eax)
+	movl	-12(%ebp), %eax
+.L3:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE2:
 	.size	ParseArg_new, .-ParseArg_new
-	.align	2
 	.globl	ParseArg_addArg
-	.ent	ParseArg_addArg
+	.type	ParseArg_addArg, @function
 ParseArg_addArg:
-	.frame	$fp,48,$ra		# vars= 8, regs= 4/0, args= 16, extra= 8
-	.mask	0xd0010000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,48
-	.cprestore 16
-	sw	$ra,44($sp)
-	sw	$fp,40($sp)
-	sw	$gp,36($sp)
-	sw	$s0,32($sp)
-	move	$fp,$sp
-	sw	$a0,48($fp)
-	sw	$a1,52($fp)
-	move	$v0,$a2
-	sw	$a3,60($fp)
-	sb	$v0,24($fp)
-	lw	$v0,48($fp)
-	beq	$v0,$zero,$L21
-	lw	$v0,48($fp)
-	lw	$v1,48($fp)
-	lw	$a0,4($v0)
-	lw	$v0,0($v1)
-	slt	$v0,$a0,$v0
-	beq	$v0,$zero,$L21
-	b	$L20
-$L21:
-	li	$v0,1			# 0x1
-	sw	$v0,28($fp)
-	b	$L19
-$L20:
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v1,$v1,$v0
-	lw	$v0,52($fp)
-	sw	$v0,0($v1)
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v1,$v1,$v0
-	lbu	$v0,24($fp)
-	sb	$v0,4($v1)
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$s0,$v1,$v0
-	lw	$a0,60($fp)
-	la	$t9,strlen
-	jal	$ra,$t9
-	addu	$v0,$v0,1
-	move	$a0,$v0
-	li	$a1,1			# 0x1
-	la	$t9,calloc
-	jal	$ra,$t9
-	move	$a0,$v0
-	lw	$a1,60($fp)
-	la	$t9,strcpy
-	jal	$ra,$t9
-	sw	$v0,8($s0)
-	lw	$v0,68($fp)
-	beq	$v0,$zero,$L22
-	lw	$v0,64($fp)
-	beq	$v0,$zero,$L22
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$s0,$v1,$v0
-	li	$a0,1			# 0x1
-	lw	$a1,68($fp)
-	la	$t9,calloc
-	jal	$ra,$t9
-	sw	$v0,12($s0)
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$a0,12($v0)
-	lw	$a1,64($fp)
-	lw	$a2,68($fp)
-	la	$t9,memcpy
-	jal	$ra,$t9
-	lw	$a0,48($fp)
-	lw	$v0,48($fp)
-	lw	$v1,4($v0)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v1,$v1,$v0
-	lw	$v0,68($fp)
-	sw	$v0,16($v1)
-$L22:
-	lw	$v1,48($fp)
-	lw	$v0,48($fp)
-	lw	$v0,4($v0)
-	addu	$v0,$v0,1
-	sw	$v0,4($v1)
-	sw	$zero,28($fp)
-$L19:
-	lw	$v0,28($fp)
-	move	$sp,$fp
-	lw	$ra,44($sp)
-	lw	$fp,40($sp)
-	lw	$s0,32($sp)
-	addu	$sp,$sp,48
-	j	$ra
-	.end	ParseArg_addArg
+.LFB3:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	pushl	%ebx
+	subl	$20, %esp
+	.cfi_offset 3, -12
+	movl	16(%ebp), %eax
+	movb	%al, -12(%ebp)
+	cmpl	$0, 8(%ebp)
+	je	.L5
+	movl	8(%ebp), %eax
+	movl	4(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	(%eax), %eax
+	cmpl	%eax, %edx
+	jl	.L6
+.L5:
+	movl	$1, %eax
+	jmp	.L7
+.L6:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%eax, %edx
+	movl	12(%ebp), %eax
+	movl	%eax, (%edx)
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%eax, %edx
+	movzbl	-12(%ebp), %eax
+	movb	%al, 4(%edx)
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	leal	(%edx,%eax), %ebx
+	movl	20(%ebp), %eax
+	movl	%eax, (%esp)
+	call	strlen
+	addl	$1, %eax
+	movl	$1, 4(%esp)
+	movl	%eax, (%esp)
+	call	calloc
+	movl	20(%ebp), %edx
+	movl	%edx, 4(%esp)
+	movl	%eax, (%esp)
+	call	strcpy
+	movl	%eax, 8(%ebx)
+	cmpl	$0, 28(%ebp)
+	je	.L8
+	cmpl	$0, 24(%ebp)
+	je	.L8
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	leal	(%edx,%eax), %ebx
+	movl	28(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	$1, (%esp)
+	call	calloc
+	movl	%eax, 12(%ebx)
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	12(%eax), %eax
+	movl	28(%ebp), %edx
+	movl	%edx, 8(%esp)
+	movl	24(%ebp), %edx
+	movl	%edx, 4(%esp)
+	movl	%eax, (%esp)
+	call	memcpy
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%eax, %edx
+	movl	28(%ebp), %eax
+	movl	%eax, 16(%edx)
+.L8:
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	leal	1(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	%edx, 4(%eax)
+	movl	$0, %eax
+.L7:
+	addl	$20, %esp
+	popl	%ebx
+	.cfi_restore 3
+	popl	%ebp
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE3:
 	.size	ParseArg_addArg, .-ParseArg_addArg
-	.align	2
 	.globl	encontrar_argumento_corto
-	.ent	encontrar_argumento_corto
+	.type	encontrar_argumento_corto, @function
 encontrar_argumento_corto:
-	.frame	$fp,32,$ra		# vars= 16, regs= 2/0, args= 0, extra= 8
-	.mask	0x50000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,32
-	.cprestore 0
-	sw	$fp,28($sp)
-	sw	$gp,24($sp)
-	move	$fp,$sp
-	sw	$a0,32($fp)
-	move	$v0,$a1
-	sb	$v0,8($fp)
-	sw	$zero,12($fp)
-	sw	$zero,12($fp)
-$L24:
-	lw	$v0,32($fp)
-	lw	$v1,12($fp)
-	lw	$v0,4($v0)
-	slt	$v0,$v1,$v0
-	bne	$v0,$zero,$L27
-	b	$L25
-$L27:
-	lw	$a0,32($fp)
-	lw	$v1,12($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lb	$v1,4($v0)
-	lb	$v0,8($fp)
-	bne	$v1,$v0,$L26
-	lw	$a0,32($fp)
-	lw	$v1,12($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	sw	$v0,16($fp)
-	b	$L23
-$L26:
-	lw	$v0,12($fp)
-	addu	$v0,$v0,1
-	sw	$v0,12($fp)
-	b	$L24
-$L25:
-	sw	$zero,16($fp)
-$L23:
-	lw	$v0,16($fp)
-	move	$sp,$fp
-	lw	$fp,28($sp)
-	addu	$sp,$sp,32
-	j	$ra
-	.end	encontrar_argumento_corto
+.LFB4:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$20, %esp
+	movl	12(%ebp), %eax
+	movb	%al, -20(%ebp)
+	movl	$0, -4(%ebp)
+	movl	$0, -4(%ebp)
+	jmp	.L10
+.L13:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-4(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movzbl	4(%eax), %eax
+	cmpb	-20(%ebp), %al
+	jne	.L11
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-4(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	jmp	.L12
+.L11:
+	addl	$1, -4(%ebp)
+.L10:
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	cmpl	-4(%ebp), %eax
+	jg	.L13
+	movl	$0, %eax
+.L12:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE4:
 	.size	encontrar_argumento_corto, .-encontrar_argumento_corto
-	.align	2
 	.globl	encontrar_argumento_largo
-	.ent	encontrar_argumento_largo
+	.type	encontrar_argumento_largo, @function
 encontrar_argumento_largo:
-	.frame	$fp,48,$ra		# vars= 8, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,48
-	.cprestore 16
-	sw	$ra,40($sp)
-	sw	$fp,36($sp)
-	sw	$gp,32($sp)
-	move	$fp,$sp
-	sw	$a0,48($fp)
-	sw	$a1,52($fp)
-	sw	$zero,24($fp)
-	sw	$zero,24($fp)
-$L30:
-	lw	$v0,48($fp)
-	lw	$v1,24($fp)
-	lw	$v0,4($v0)
-	slt	$v0,$v1,$v0
-	bne	$v0,$zero,$L33
-	b	$L31
-$L33:
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$a0,8($v0)
-	lw	$a1,52($fp)
-	la	$t9,strcmp
-	jal	$ra,$t9
-	bne	$v0,$zero,$L32
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	sw	$v0,28($fp)
-	b	$L29
-$L32:
-	lw	$v0,24($fp)
-	addu	$v0,$v0,1
-	sw	$v0,24($fp)
-	b	$L30
-$L31:
-	sw	$zero,28($fp)
-$L29:
-	lw	$v0,28($fp)
-	move	$sp,$fp
-	lw	$ra,40($sp)
-	lw	$fp,36($sp)
-	addu	$sp,$sp,48
-	j	$ra
-	.end	encontrar_argumento_largo
+.LFB5:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	movl	$0, -12(%ebp)
+	movl	$0, -12(%ebp)
+	jmp	.L15
+.L18:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	8(%eax), %eax
+	movl	12(%ebp), %edx
+	movl	%edx, 4(%esp)
+	movl	%eax, (%esp)
+	call	strcmp
+	testl	%eax, %eax
+	jne	.L16
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	jmp	.L17
+.L16:
+	addl	$1, -12(%ebp)
+.L15:
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	cmpl	-12(%ebp), %eax
+	jg	.L18
+	movl	$0, %eax
+.L17:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE5:
 	.size	encontrar_argumento_largo, .-encontrar_argumento_largo
-	.align	2
 	.globl	ParseArg_parse
-	.ent	ParseArg_parse
+	.type	ParseArg_parse, @function
 ParseArg_parse:
-	.frame	$fp,56,$ra		# vars= 16, regs= 4/0, args= 16, extra= 8
-	.mask	0xd0010000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,56
-	.cprestore 16
-	sw	$ra,52($sp)
-	sw	$fp,48($sp)
-	sw	$gp,44($sp)
-	sw	$s0,40($sp)
-	move	$fp,$sp
-	sw	$a0,56($fp)
-	sw	$a1,60($fp)
-	sw	$a2,64($fp)
-	sw	$zero,24($fp)
-	lw	$v0,56($fp)
-	bne	$v0,$zero,$L36
-	li	$v0,1			# 0x1
-	sw	$v0,32($fp)
-	b	$L35
-$L36:
-	li	$v0,1			# 0x1
-	sw	$v0,24($fp)
-$L37:
-	lw	$v0,24($fp)
-	lw	$v1,60($fp)
-	slt	$v0,$v0,$v1
-	bne	$v0,$zero,$L40
-	b	$L38
-$L40:
-	sw	$zero,28($fp)
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$v0,0($v0)
-	lb	$v1,0($v0)
-	li	$v0,45			# 0x2d
-	bne	$v1,$v0,$L39
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$v0,0($v0)
-	addu	$v0,$v0,1
-	lb	$v1,0($v0)
-	li	$v0,45			# 0x2d
-	bne	$v1,$v0,$L42
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$v0,0($v0)
-	addu	$v0,$v0,2
-	lw	$a0,56($fp)
-	move	$a1,$v0
-	la	$t9,encontrar_argumento_largo
-	jal	$ra,$t9
-	sw	$v0,28($fp)
-	b	$L43
-$L42:
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$v0,0($v0)
-	addu	$v0,$v0,1
-	lb	$v0,0($v0)
-	lw	$a0,56($fp)
-	move	$a1,$v0
-	la	$t9,encontrar_argumento_corto
-	jal	$ra,$t9
-	sw	$v0,28($fp)
-$L43:
-	lw	$v0,28($fp)
-	bne	$v0,$zero,$L44
-	b	$L39
-$L44:
-	lw	$v1,28($fp)
-	li	$v0,1			# 0x1
-	sw	$v0,20($v1)
-	lw	$v0,28($fp)
-	lw	$v0,0($v0)
-	bne	$v0,$zero,$L45
-	b	$L39
-$L45:
-	lw	$v0,24($fp)
-	addu	$v1,$v0,1
-	lw	$v0,60($fp)
-	slt	$v0,$v1,$v0
-	beq	$v0,$zero,$L39
-	lw	$v0,24($fp)
-	addu	$v0,$v0,1
-	sw	$v0,24($fp)
-	lw	$s0,28($fp)
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$a0,0($v0)
-	la	$t9,strlen
-	jal	$ra,$t9
-	addu	$v0,$v0,1
-	move	$a0,$v0
-	li	$a1,1			# 0x1
-	la	$t9,calloc
-	jal	$ra,$t9
-	move	$a0,$v0
-	lw	$v0,24($fp)
-	sll	$v1,$v0,2
-	lw	$v0,64($fp)
-	addu	$v0,$v1,$v0
-	lw	$a1,0($v0)
-	la	$t9,strcpy
-	jal	$ra,$t9
-	sw	$v0,24($s0)
-$L39:
-	lw	$v0,24($fp)
-	addu	$v0,$v0,1
-	sw	$v0,24($fp)
-	b	$L37
-$L38:
-	sw	$zero,32($fp)
-$L35:
-	lw	$v0,32($fp)
-	move	$sp,$fp
-	lw	$ra,52($sp)
-	lw	$fp,48($sp)
-	lw	$s0,40($sp)
-	addu	$sp,$sp,56
-	j	$ra
-	.end	ParseArg_parse
+.LFB6:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	pushl	%ebx
+	subl	$36, %esp
+	.cfi_offset 3, -12
+	movl	$0, -12(%ebp)
+	cmpl	$0, 8(%ebp)
+	jne	.L20
+	movl	$1, %eax
+	jmp	.L21
+.L20:
+	movl	$1, -12(%ebp)
+	jmp	.L22
+.L28:
+	movl	$0, -16(%ebp)
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %eax
+	movzbl	(%eax), %eax
+	cmpb	$45, %al
+	jne	.L23
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %eax
+	addl	$1, %eax
+	movzbl	(%eax), %eax
+	cmpb	$45, %al
+	jne	.L24
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %eax
+	addl	$2, %eax
+	movl	%eax, 4(%esp)
+	movl	8(%ebp), %eax
+	movl	%eax, (%esp)
+	call	encontrar_argumento_largo
+	movl	%eax, -16(%ebp)
+	jmp	.L25
+.L24:
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %eax
+	addl	$1, %eax
+	movzbl	(%eax), %eax
+	movsbl	%al, %eax
+	movl	%eax, 4(%esp)
+	movl	8(%ebp), %eax
+	movl	%eax, (%esp)
+	call	encontrar_argumento_corto
+	movl	%eax, -16(%ebp)
+.L25:
+	cmpl	$0, -16(%ebp)
+	jne	.L26
+	jmp	.L23
+.L26:
+	movl	-16(%ebp), %eax
+	movl	$1, 20(%eax)
+	movl	-16(%ebp), %eax
+	movl	(%eax), %eax
+	testl	%eax, %eax
+	jne	.L27
+	jmp	.L23
+.L27:
+	movl	-12(%ebp), %eax
+	addl	$1, %eax
+	cmpl	12(%ebp), %eax
+	jge	.L23
+	addl	$1, -12(%ebp)
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %ebx
+	movl	-12(%ebp), %eax
+	leal	0(,%eax,4), %edx
+	movl	16(%ebp), %eax
+	addl	%edx, %eax
+	movl	(%eax), %eax
+	movl	%eax, (%esp)
+	call	strlen
+	addl	$1, %eax
+	movl	$1, 4(%esp)
+	movl	%eax, (%esp)
+	call	calloc
+	movl	%ebx, 4(%esp)
+	movl	%eax, (%esp)
+	call	strcpy
+	movl	-16(%ebp), %edx
+	movl	%eax, 24(%edx)
+.L23:
+	addl	$1, -12(%ebp)
+.L22:
+	movl	-12(%ebp), %eax
+	cmpl	12(%ebp), %eax
+	jl	.L28
+	movl	$0, %eax
+.L21:
+	addl	$36, %esp
+	popl	%ebx
+	.cfi_restore 3
+	popl	%ebp
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE6:
 	.size	ParseArg_parse, .-ParseArg_parse
-	.align	2
 	.globl	ParseArg_getArg
-	.ent	ParseArg_getArg
+	.type	ParseArg_getArg, @function
 ParseArg_getArg:
-	.frame	$fp,56,$ra		# vars= 16, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,56
-	.cprestore 16
-	sw	$ra,48($sp)
-	sw	$fp,44($sp)
-	sw	$gp,40($sp)
-	move	$fp,$sp
-	sw	$a0,56($fp)
-	move	$v0,$a1
-	sb	$v0,24($fp)
-	sw	$zero,28($fp)
-	lw	$v0,56($fp)
-	bne	$v0,$zero,$L48
-	sw	$zero,32($fp)
-	b	$L47
-$L48:
-	lb	$v0,24($fp)
-	lw	$a0,56($fp)
-	move	$a1,$v0
-	la	$t9,encontrar_argumento_corto
-	jal	$ra,$t9
-	sw	$v0,28($fp)
-	lw	$v0,28($fp)
-	bne	$v0,$zero,$L49
-	sw	$zero,32($fp)
-	b	$L47
-$L49:
-	lw	$v0,28($fp)
-	lw	$v0,20($v0)
-	beq	$v0,$zero,$L50
-	lw	$v0,28($fp)
-	lw	$v0,0($v0)
-	bne	$v0,$zero,$L51
-	li	$v0,1			# 0x1
-	sw	$v0,32($fp)
-	b	$L47
-$L51:
-	lw	$v0,28($fp)
-	lw	$v0,24($v0)
-	bne	$v0,$zero,$L52
-	sw	$zero,32($fp)
-	b	$L47
-$L52:
-	lw	$v0,28($fp)
-	lw	$v1,28($fp)
-	lw	$v0,0($v0)
-	lw	$a0,24($v1)
-	move	$t9,$v0
-	jal	$ra,$t9
-	sw	$v0,32($fp)
-	b	$L47
-$L50:
-	lw	$v0,28($fp)
-	lw	$v0,12($v0)
-	sw	$v0,32($fp)
-$L47:
-	lw	$v0,32($fp)
-	move	$sp,$fp
-	lw	$ra,48($sp)
-	lw	$fp,44($sp)
-	addu	$sp,$sp,56
-	j	$ra
-	.end	ParseArg_getArg
+.LFB7:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	movl	12(%ebp), %eax
+	movb	%al, -28(%ebp)
+	movl	$0, -12(%ebp)
+	cmpl	$0, 8(%ebp)
+	jne	.L30
+	movl	$0, %eax
+	jmp	.L31
+.L30:
+	movsbl	-28(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	8(%ebp), %eax
+	movl	%eax, (%esp)
+	call	encontrar_argumento_corto
+	movl	%eax, -12(%ebp)
+	cmpl	$0, -12(%ebp)
+	jne	.L32
+	movl	$0, %eax
+	jmp	.L31
+.L32:
+	movl	-12(%ebp), %eax
+	movl	20(%eax), %eax
+	testl	%eax, %eax
+	je	.L33
+	movl	-12(%ebp), %eax
+	movl	(%eax), %eax
+	testl	%eax, %eax
+	jne	.L34
+	movl	$1, %eax
+	jmp	.L31
+.L34:
+	movl	-12(%ebp), %eax
+	movl	24(%eax), %eax
+	testl	%eax, %eax
+	jne	.L35
+	movl	$0, %eax
+	jmp	.L31
+.L35:
+	movl	-12(%ebp), %eax
+	movl	(%eax), %eax
+	movl	-12(%ebp), %edx
+	movl	24(%edx), %edx
+	movl	%edx, (%esp)
+	call	*%eax
+	jmp	.L31
+.L33:
+	movl	-12(%ebp), %eax
+	movl	12(%eax), %eax
+.L31:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE7:
 	.size	ParseArg_getArg, .-ParseArg_getArg
-	.align	2
 	.globl	ParseArg_delete
-	.ent	ParseArg_delete
+	.type	ParseArg_delete, @function
 ParseArg_delete:
-	.frame	$fp,48,$ra		# vars= 8, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,48
-	.cprestore 16
-	sw	$ra,40($sp)
-	sw	$fp,36($sp)
-	sw	$gp,32($sp)
-	move	$fp,$sp
-	sw	$a0,48($fp)
-	sw	$zero,24($fp)
-	lw	$v0,48($fp)
-	bne	$v0,$zero,$L54
-	li	$v0,1			# 0x1
-	sw	$v0,28($fp)
-	b	$L53
-$L54:
-	sw	$zero,24($fp)
-$L55:
-	lw	$v0,48($fp)
-	lw	$v1,24($fp)
-	lw	$v0,4($v0)
-	slt	$v0,$v1,$v0
-	bne	$v0,$zero,$L58
-	b	$L56
-$L58:
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$v0,8($v0)
-	beq	$v0,$zero,$L59
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$a0,8($v0)
-	la	$t9,free
-	jal	$ra,$t9
-$L59:
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$v0,12($v0)
-	beq	$v0,$zero,$L60
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$a0,12($v0)
-	la	$t9,free
-	jal	$ra,$t9
-$L60:
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$v0,24($v0)
-	beq	$v0,$zero,$L57
-	lw	$a0,48($fp)
-	lw	$v1,24($fp)
-	move	$v0,$v1
-	sll	$v0,$v0,3
-	subu	$v0,$v0,$v1
-	sll	$v1,$v0,2
-	lw	$v0,8($a0)
-	addu	$v0,$v1,$v0
-	lw	$a0,24($v0)
-	la	$t9,free
-	jal	$ra,$t9
-$L57:
-	lw	$v0,24($fp)
-	addu	$v0,$v0,1
-	sw	$v0,24($fp)
-	b	$L55
-$L56:
-	lw	$v0,48($fp)
-	lw	$a0,8($v0)
-	la	$t9,free
-	jal	$ra,$t9
-	lw	$a0,48($fp)
-	la	$t9,free
-	jal	$ra,$t9
-	sw	$zero,28($fp)
-$L53:
-	lw	$v0,28($fp)
-	move	$sp,$fp
-	lw	$ra,40($sp)
-	lw	$fp,36($sp)
-	addu	$sp,$sp,48
-	j	$ra
-	.end	ParseArg_delete
+.LFB8:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	movl	$0, -12(%ebp)
+	cmpl	$0, 8(%ebp)
+	jne	.L37
+	movl	$1, %eax
+	jmp	.L38
+.L37:
+	movl	$0, -12(%ebp)
+	jmp	.L39
+.L43:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	8(%eax), %eax
+	testl	%eax, %eax
+	je	.L40
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	8(%eax), %eax
+	movl	%eax, (%esp)
+	call	free
+.L40:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	12(%eax), %eax
+	testl	%eax, %eax
+	je	.L41
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	12(%eax), %eax
+	movl	%eax, (%esp)
+	call	free
+.L41:
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	24(%eax), %eax
+	testl	%eax, %eax
+	je	.L42
+	movl	8(%ebp), %eax
+	movl	8(%eax), %edx
+	movl	-12(%ebp), %eax
+	sall	$2, %eax
+	leal	0(,%eax,8), %ecx
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	addl	%edx, %eax
+	movl	24(%eax), %eax
+	movl	%eax, (%esp)
+	call	free
+.L42:
+	addl	$1, -12(%ebp)
+.L39:
+	movl	8(%ebp), %eax
+	movl	4(%eax), %eax
+	cmpl	-12(%ebp), %eax
+	jg	.L43
+	movl	8(%ebp), %eax
+	movl	8(%eax), %eax
+	movl	%eax, (%esp)
+	call	free
+	movl	8(%ebp), %eax
+	movl	%eax, (%esp)
+	call	free
+	movl	$0, %eax
+.L38:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE8:
 	.size	ParseArg_delete, .-ParseArg_delete
-	.align	2
 	.globl	ParseArg_parseStr
-	.ent	ParseArg_parseStr
+	.type	ParseArg_parseStr, @function
 ParseArg_parseStr:
-	.frame	$fp,40,$ra		# vars= 0, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,40
-	.cprestore 16
-	sw	$ra,32($sp)
-	sw	$fp,28($sp)
-	sw	$gp,24($sp)
-	move	$fp,$sp
-	sw	$a0,40($fp)
-	lw	$a0,40($fp)
-	la	$t9,strlen
-	jal	$ra,$t9
-	addu	$v0,$v0,1
-	move	$a0,$v0
-	li	$a1,1			# 0x1
-	la	$t9,calloc
-	jal	$ra,$t9
-	move	$a0,$v0
-	lw	$a1,40($fp)
-	la	$t9,strcpy
-	jal	$ra,$t9
-	move	$sp,$fp
-	lw	$ra,32($sp)
-	lw	$fp,28($sp)
-	addu	$sp,$sp,40
-	j	$ra
-	.end	ParseArg_parseStr
+.LFB9:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$24, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, (%esp)
+	call	strlen
+	addl	$1, %eax
+	movl	$1, 4(%esp)
+	movl	%eax, (%esp)
+	call	calloc
+	movl	8(%ebp), %edx
+	movl	%edx, 4(%esp)
+	movl	%eax, (%esp)
+	call	strcpy
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE9:
 	.size	ParseArg_parseStr, .-ParseArg_parseStr
-	.ident	"GCC: (GNU) 3.3.3 (NetBSD nb3 20040520)"
+	.ident	"GCC: (Debian 4.8.2-16) 4.8.2"
+	.section	.note.GNU-stack,"",@progbits

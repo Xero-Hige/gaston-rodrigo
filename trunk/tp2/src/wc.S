@@ -1,4 +1,5 @@
 #TODO : Creo que esto se puede sacar, ver
+
 #include <mips/regdef.h>
 
 
@@ -33,9 +34,9 @@ wc:
 	sw a1,68($fp) #int lines
 	sw a2,72($fp) #int words
 	sw a3,76($fp) #int bytes
-	sw a1,$t1
-	sw a2,$t2
-	sw a3,$t3
+	sw a1,0(t1)
+	sw a2,0(t2)
+	sw a3,0(t3)
 
 	
 	#Seteo los acumuladores a 0
@@ -70,7 +71,7 @@ read_byte:
 	move		a1, s1			# Cargo el contador de lineas en el parametro 1
 	move		a2, s2			# Cargo el contador de palabras en el parametro 2
 	jal			count			# Llamo al count
-
+	.cprestore
 	j			read_byte		# Vuelvo a leer
 
 error:

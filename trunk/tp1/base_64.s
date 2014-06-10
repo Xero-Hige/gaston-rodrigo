@@ -1,588 +1,505 @@
-	.file	1 "base_64.c"
-	.section .mdebug.abi32
-	.previous
-	.abicalls
+	.file	"base_64.c"
 	.data
 	.type	little_endian, @object
 	.size	little_endian, 1
 little_endian:
 	.byte	1
 	.text
-	.align	2
 	.globl	set_endianess
-	.ent	set_endianess
+	.type	set_endianess, @function
 set_endianess:
-	.frame	$fp,24,$ra		# vars= 8, regs= 2/0, args= 0, extra= 8
-	.mask	0x50000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,24
-	.cprestore 0
-	sw	$fp,20($sp)
-	sw	$gp,16($sp)
-	move	$fp,$sp
-	li	$v0,1			# 0x1
-	sw	$v0,8($fp)
-	addu	$v0,$fp,8
-	sw	$v0,12($fp)
-	lw	$v0,12($fp)
-	lb	$v1,0($v0)
-	li	$v0,1			# 0x1
-	bne	$v1,$v0,$L18
-	li	$v0,1			# 0x1
-	sb	$v0,little_endian
-	b	$L17
-$L18:
-	sb	$zero,little_endian
-$L17:
-	move	$sp,$fp
-	lw	$fp,20($sp)
-	addu	$sp,$sp,24
-	j	$ra
-	.end	set_endianess
+.LFB2:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$16, %esp
+	movl	$1, -8(%ebp)
+	leal	-8(%ebp), %eax
+	movl	%eax, -4(%ebp)
+	movl	-4(%ebp), %eax
+	movzbl	(%eax), %eax
+	cmpb	$1, %al
+	jne	.L2
+	movb	$1, little_endian
+	jmp	.L1
+.L2:
+	movb	$0, little_endian
+.L1:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE2:
 	.size	set_endianess, .-set_endianess
-	.align	2
 	.globl	array_invert
-	.ent	array_invert
+	.type	array_invert, @function
 array_invert:
-	.frame	$fp,24,$ra		# vars= 8, regs= 2/0, args= 0, extra= 8
-	.mask	0x50000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,24
-	.cprestore 0
-	sw	$fp,20($sp)
-	sw	$gp,16($sp)
-	move	$fp,$sp
-	sw	$a0,24($fp)
-	sb	$zero,8($fp)
-	lw	$v0,24($fp)
-	lbu	$v0,0($v0)
-	sb	$v0,8($fp)
-	lw	$v1,24($fp)
-	lw	$v0,24($fp)
-	addu	$v0,$v0,3
-	lbu	$v0,0($v0)
-	sb	$v0,0($v1)
-	lw	$v0,24($fp)
-	addu	$v1,$v0,3
-	lbu	$v0,8($fp)
-	sb	$v0,0($v1)
-	lw	$v0,24($fp)
-	addu	$v0,$v0,1
-	lbu	$v0,0($v0)
-	sb	$v0,8($fp)
-	lw	$v0,24($fp)
-	addu	$v1,$v0,1
-	lw	$v0,24($fp)
-	addu	$v0,$v0,2
-	lbu	$v0,0($v0)
-	sb	$v0,0($v1)
-	lw	$v0,24($fp)
-	addu	$v1,$v0,2
-	lbu	$v0,8($fp)
-	sb	$v0,0($v1)
-	move	$sp,$fp
-	lw	$fp,20($sp)
-	addu	$sp,$sp,24
-	j	$ra
-	.end	array_invert
+.LFB3:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$16, %esp
+	movb	$0, -1(%ebp)
+	movl	8(%ebp), %eax
+	movzbl	(%eax), %eax
+	movb	%al, -1(%ebp)
+	movl	8(%ebp), %eax
+	movzbl	3(%eax), %edx
+	movl	8(%ebp), %eax
+	movb	%dl, (%eax)
+	movl	8(%ebp), %eax
+	leal	3(%eax), %edx
+	movzbl	-1(%ebp), %eax
+	movb	%al, (%edx)
+	movl	8(%ebp), %eax
+	movzbl	1(%eax), %eax
+	movb	%al, -1(%ebp)
+	movl	8(%ebp), %eax
+	leal	1(%eax), %edx
+	movl	8(%ebp), %eax
+	movzbl	2(%eax), %eax
+	movb	%al, (%edx)
+	movl	8(%ebp), %eax
+	leal	2(%eax), %edx
+	movzbl	-1(%ebp), %eax
+	movb	%al, (%edx)
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE3:
 	.size	array_invert, .-array_invert
-	.rdata
-	.align	2
-$LC0:
-	.ascii	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123"
-	.ascii	"456789+/\000"
+	.section	.rodata
+	.align 4
+.LC0:
+	.string	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 	.text
-	.align	2
 	.globl	encode_to_base64
-	.ent	encode_to_base64
+	.type	encode_to_base64, @function
 encode_to_base64:
-	.frame	$fp,64,$ra		# vars= 24, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,64
-	.cprestore 16
-	sw	$ra,56($sp)
-	sw	$fp,52($sp)
-	sw	$gp,48($sp)
-	move	$fp,$sp
-	sw	$a0,64($fp)
-	sw	$a1,68($fp)
-	sw	$zero,24($fp)
-	sw	$zero,28($fp)
-	addu	$v0,$fp,24
-	sw	$v0,36($fp)
-	addu	$v0,$fp,28
-	sw	$v0,40($fp)
-	addu	$a0,$fp,24
-	lw	$a1,64($fp)
-	li	$a2,3			# 0x3
-	la	$t9,memcpy
-	jal	$ra,$t9
-	lbu	$v0,little_endian
-	beq	$v0,$zero,$L22
-	lw	$a0,36($fp)
-	la	$t9,array_invert
-	jal	$ra,$t9
-$L22:
-	lw	$v0,24($fp)
-	sra	$v0,$v0,8
-	sw	$v0,24($fp)
-	sw	$zero,32($fp)
-$L23:
-	lw	$v0,32($fp)
-	slt	$v0,$v0,4
-	bne	$v0,$zero,$L26
-	b	$L24
-$L26:
-	lw	$v0,24($fp)
-	sll	$v0,$v0,6
-	sw	$v0,24($fp)
-	lbu	$v0,little_endian
-	beq	$v0,$zero,$L27
-	lw	$v1,40($fp)
-	lw	$v0,36($fp)
-	addu	$v0,$v0,3
-	lbu	$v0,0($v0)
-	sb	$v0,0($v1)
-	lw	$v0,36($fp)
-	addu	$v0,$v0,3
-	sb	$zero,0($v0)
-	b	$L28
-$L27:
-	lw	$v0,40($fp)
-	addu	$v1,$v0,3
-	lw	$v0,36($fp)
-	lbu	$v0,0($v0)
-	sb	$v0,0($v1)
-	lw	$v0,36($fp)
-	sb	$zero,0($v0)
-$L28:
-	lw	$v1,68($fp)
-	lw	$v0,32($fp)
-	addu	$a0,$v1,$v0
-	lw	$v1,28($fp)
-	la	$v0,$LC0
-	addu	$v0,$v1,$v0
-	lbu	$v0,0($v0)
-	sb	$v0,0($a0)
-	lw	$v0,32($fp)
-	addu	$v0,$v0,1
-	sw	$v0,32($fp)
-	b	$L23
-$L24:
-	li	$v0,1			# 0x1
-	move	$sp,$fp
-	lw	$ra,56($sp)
-	lw	$fp,52($sp)
-	addu	$sp,$sp,64
-	j	$ra
-	.end	encode_to_base64
+.LFB4:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$56, %esp
+	movl	$0, -24(%ebp)
+	movl	$0, -28(%ebp)
+	leal	-24(%ebp), %eax
+	movl	%eax, -16(%ebp)
+	leal	-28(%ebp), %eax
+	movl	%eax, -20(%ebp)
+	movl	$3, 8(%esp)
+	movl	8(%ebp), %eax
+	movl	%eax, 4(%esp)
+	leal	-24(%ebp), %eax
+	movl	%eax, (%esp)
+	call	memcpy
+	movzbl	little_endian, %eax
+	testb	%al, %al
+	je	.L6
+	movl	-16(%ebp), %eax
+	movl	%eax, (%esp)
+	call	array_invert
+.L6:
+	movl	-24(%ebp), %eax
+	sarl	$8, %eax
+	movl	%eax, -24(%ebp)
+	movl	$0, -12(%ebp)
+	jmp	.L7
+.L10:
+	movl	-24(%ebp), %eax
+	sall	$6, %eax
+	movl	%eax, -24(%ebp)
+	movzbl	little_endian, %eax
+	testb	%al, %al
+	je	.L8
+	movl	-16(%ebp), %eax
+	movzbl	3(%eax), %edx
+	movl	-20(%ebp), %eax
+	movb	%dl, (%eax)
+	movl	-16(%ebp), %eax
+	addl	$3, %eax
+	movb	$0, (%eax)
+	jmp	.L9
+.L8:
+	movl	-20(%ebp), %eax
+	leal	3(%eax), %edx
+	movl	-16(%ebp), %eax
+	movzbl	(%eax), %eax
+	movb	%al, (%edx)
+	movl	-16(%ebp), %eax
+	movb	$0, (%eax)
+.L9:
+	movl	-12(%ebp), %edx
+	movl	12(%ebp), %eax
+	addl	%eax, %edx
+	movl	-28(%ebp), %eax
+	movzbl	.LC0(%eax), %eax
+	movb	%al, (%edx)
+	addl	$1, -12(%ebp)
+.L7:
+	cmpl	$3, -12(%ebp)
+	jle	.L10
+	movl	$1, %eax
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE4:
 	.size	encode_to_base64, .-encode_to_base64
-	.align	2
 	.globl	index_of
-	.ent	index_of
+	.type	index_of, @function
 index_of:
-	.frame	$fp,32,$ra		# vars= 16, regs= 2/0, args= 0, extra= 8
-	.mask	0x50000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,32
-	.cprestore 0
-	sw	$fp,28($sp)
-	sw	$gp,24($sp)
-	move	$fp,$sp
-	move	$v0,$a0
-	sw	$a1,36($fp)
-	sw	$a2,40($fp)
-	sb	$v0,8($fp)
-	li	$v0,-1			# 0xffffffffffffffff
-	sw	$v0,12($fp)
-	sw	$zero,16($fp)
-$L30:
-	lw	$v0,16($fp)
-	lw	$v1,40($fp)
-	sltu	$v0,$v0,$v1
-	bne	$v0,$zero,$L33
-	b	$L31
-$L33:
-	lw	$v1,36($fp)
-	lw	$v0,16($fp)
-	addu	$v0,$v1,$v0
-	lb	$v1,8($fp)
-	lb	$v0,0($v0)
-	bne	$v1,$v0,$L32
-	lw	$v0,16($fp)
-	sw	$v0,12($fp)
-	b	$L31
-$L32:
-	lw	$v0,16($fp)
-	addu	$v0,$v0,1
-	sw	$v0,16($fp)
-	b	$L30
-$L31:
-	lw	$v0,12($fp)
-	move	$sp,$fp
-	lw	$fp,28($sp)
-	addu	$sp,$sp,32
-	j	$ra
-	.end	index_of
+.LFB5:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$20, %esp
+	movl	8(%ebp), %eax
+	movb	%al, -20(%ebp)
+	movl	$-1, -4(%ebp)
+	movl	$0, -8(%ebp)
+	jmp	.L13
+.L16:
+	movl	-8(%ebp), %eax
+	movl	12(%ebp), %edx
+	addl	%edx, %eax
+	movzbl	(%eax), %eax
+	cmpb	-20(%ebp), %al
+	jne	.L14
+	movl	-8(%ebp), %eax
+	movl	%eax, -4(%ebp)
+	jmp	.L15
+.L14:
+	addl	$1, -8(%ebp)
+.L13:
+	movl	-8(%ebp), %eax
+	cmpl	16(%ebp), %eax
+	jb	.L16
+.L15:
+	movl	-4(%ebp), %eax
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE5:
 	.size	index_of, .-index_of
-	.align	2
 	.globl	decode_from_base64
-	.ent	decode_from_base64
+	.type	decode_from_base64, @function
 decode_from_base64:
-	.frame	$fp,64,$ra		# vars= 24, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,64
-	.cprestore 16
-	sw	$ra,56($sp)
-	sw	$fp,52($sp)
-	sw	$gp,48($sp)
-	move	$fp,$sp
-	sw	$a0,64($fp)
-	sw	$a1,68($fp)
-	sw	$a2,72($fp)
-	sw	$zero,24($fp)
-	lw	$v0,72($fp)
-	sw	$zero,0($v0)
-	addu	$v0,$fp,24
-	sw	$v0,32($fp)
-	li	$v0,3			# 0x3
-	sw	$v0,28($fp)
-$L36:
-	lw	$v0,28($fp)
-	bgez	$v0,$L39
-	b	$L37
-$L39:
-	lw	$v1,64($fp)
-	lw	$v0,28($fp)
-	addu	$v0,$v1,$v0
-	lb	$v0,0($v0)
-	move	$a0,$v0
-	la	$a1,$LC0
-	li	$a2,64			# 0x40
-	la	$t9,index_of
-	jal	$ra,$t9
-	sw	$v0,36($fp)
-	lw	$v0,36($fp)
-	bgez	$v0,$L40
-	lw	$v1,64($fp)
-	lw	$v0,28($fp)
-	addu	$v0,$v1,$v0
-	lb	$v1,0($v0)
-	li	$v0,61			# 0x3d
-	beq	$v1,$v0,$L41
-	sw	$zero,40($fp)
-	b	$L35
-$L41:
-	lw	$v1,72($fp)
-	lw	$v0,72($fp)
-	lw	$v0,0($v0)
-	addu	$v0,$v0,1
-	sw	$v0,0($v1)
-	lbu	$v0,little_endian
-	beq	$v0,$zero,$L42
-	lw	$v0,32($fp)
-	addu	$v0,$v0,3
-	sb	$zero,0($v0)
-	b	$L44
-$L42:
-	lw	$v0,32($fp)
-	sb	$zero,0($v0)
-	b	$L44
-$L40:
-	lbu	$v0,little_endian
-	beq	$v0,$zero,$L45
-	lw	$v0,32($fp)
-	addu	$v1,$v0,3
-	lbu	$v0,36($fp)
-	sb	$v0,0($v1)
-	b	$L44
-$L45:
-	lw	$v1,32($fp)
-	lbu	$v0,36($fp)
-	sb	$v0,0($v1)
-$L44:
-	lw	$v0,24($fp)
-	sra	$v0,$v0,6
-	sw	$v0,24($fp)
-	lw	$v0,28($fp)
-	addu	$v0,$v0,-1
-	sw	$v0,28($fp)
-	b	$L36
-$L37:
-	lbu	$v0,little_endian
-	beq	$v0,$zero,$L47
-	lw	$a0,32($fp)
-	la	$t9,array_invert
-	jal	$ra,$t9
-$L47:
-	lw	$v0,32($fp)
-	addu	$v0,$v0,1
-	lw	$a0,68($fp)
-	move	$a1,$v0
-	li	$a2,3			# 0x3
-	la	$t9,memcpy
-	jal	$ra,$t9
-	li	$v0,1			# 0x1
-	sw	$v0,40($fp)
-$L35:
-	lw	$v0,40($fp)
-	move	$sp,$fp
-	lw	$ra,56($sp)
-	lw	$fp,52($sp)
-	addu	$sp,$sp,64
-	j	$ra
-	.end	decode_from_base64
+.LFB6:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	movl	$0, -24(%ebp)
+	movl	16(%ebp), %eax
+	movl	$0, (%eax)
+	leal	-24(%ebp), %eax
+	movl	%eax, -16(%ebp)
+	movl	$3, -12(%ebp)
+	jmp	.L19
+.L27:
+	movl	-12(%ebp), %edx
+	movl	8(%ebp), %eax
+	addl	%edx, %eax
+	movzbl	(%eax), %eax
+	movsbl	%al, %eax
+	movl	$64, 8(%esp)
+	movl	$.LC0, 4(%esp)
+	movl	%eax, (%esp)
+	call	index_of
+	movl	%eax, -20(%ebp)
+	cmpl	$0, -20(%ebp)
+	jns	.L20
+	movl	-12(%ebp), %edx
+	movl	8(%ebp), %eax
+	addl	%edx, %eax
+	movzbl	(%eax), %eax
+	cmpb	$61, %al
+	je	.L21
+	movl	$0, %eax
+	jmp	.L29
+.L21:
+	movl	16(%ebp), %eax
+	movl	(%eax), %eax
+	leal	1(%eax), %edx
+	movl	16(%ebp), %eax
+	movl	%edx, (%eax)
+	movzbl	little_endian, %eax
+	testb	%al, %al
+	je	.L23
+	movl	-16(%ebp), %eax
+	addl	$3, %eax
+	movb	$0, (%eax)
+	jmp	.L25
+.L23:
+	movl	-16(%ebp), %eax
+	movb	$0, (%eax)
+	jmp	.L25
+.L20:
+	movzbl	little_endian, %eax
+	testb	%al, %al
+	je	.L26
+	movl	-16(%ebp), %eax
+	leal	3(%eax), %edx
+	movl	-20(%ebp), %eax
+	movb	%al, (%edx)
+	jmp	.L25
+.L26:
+	movl	-20(%ebp), %eax
+	movl	%eax, %edx
+	movl	-16(%ebp), %eax
+	movb	%dl, (%eax)
+.L25:
+	movl	-24(%ebp), %eax
+	sarl	$6, %eax
+	movl	%eax, -24(%ebp)
+	subl	$1, -12(%ebp)
+.L19:
+	cmpl	$0, -12(%ebp)
+	jns	.L27
+	movzbl	little_endian, %eax
+	testb	%al, %al
+	je	.L28
+	movl	-16(%ebp), %eax
+	movl	%eax, (%esp)
+	call	array_invert
+.L28:
+	movl	-16(%ebp), %eax
+	addl	$1, %eax
+	movl	$3, 8(%esp)
+	movl	%eax, 4(%esp)
+	movl	12(%ebp), %eax
+	movl	%eax, (%esp)
+	call	memcpy
+	movl	$1, %eax
+.L29:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE6:
 	.size	decode_from_base64, .-decode_from_base64
-	.align	2
 	.globl	add_padding
-	.ent	add_padding
+	.type	add_padding, @function
 add_padding:
-	.frame	$fp,16,$ra		# vars= 0, regs= 2/0, args= 0, extra= 8
-	.mask	0x50000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,16
-	.cprestore 0
-	sw	$fp,12($sp)
-	sw	$gp,8($sp)
-	move	$fp,$sp
-	sw	$a0,16($fp)
-	sw	$a1,20($fp)
-	lw	$v0,16($fp)
-	slt	$v0,$v0,3
-	beq	$v0,$zero,$L48
-	lw	$v0,16($fp)
-	slt	$v0,$v0,3
-	beq	$v0,$zero,$L50
-	lw	$v0,20($fp)
-	addu	$v1,$v0,3
-	li	$v0,61			# 0x3d
-	sb	$v0,0($v1)
-$L50:
-	lw	$v0,16($fp)
-	slt	$v0,$v0,2
-	beq	$v0,$zero,$L48
-	lw	$v0,20($fp)
-	addu	$v1,$v0,2
-	li	$v0,61			# 0x3d
-	sb	$v0,0($v1)
-$L48:
-	move	$sp,$fp
-	lw	$fp,12($sp)
-	addu	$sp,$sp,16
-	j	$ra
-	.end	add_padding
+.LFB7:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	cmpl	$2, 8(%ebp)
+	jg	.L30
+	cmpl	$2, 8(%ebp)
+	jg	.L32
+	movl	12(%ebp), %eax
+	addl	$3, %eax
+	movb	$61, (%eax)
+.L32:
+	cmpl	$1, 8(%ebp)
+	jg	.L30
+	movl	12(%ebp), %eax
+	addl	$2, %eax
+	movb	$61, (%eax)
+.L30:
+	popl	%ebp
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE7:
 	.size	add_padding, .-add_padding
-	.align	2
 	.globl	encode
-	.ent	encode
+	.type	encode, @function
 encode:
-	.frame	$fp,72,$ra		# vars= 32, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,72
-	.cprestore 16
-	sw	$ra,64($sp)
-	sw	$fp,60($sp)
-	sw	$gp,56($sp)
-	move	$fp,$sp
-	sw	$a0,72($fp)
-	sw	$a1,76($fp)
-	la	$t9,set_endianess
-	jal	$ra,$t9
-	addu	$a0,$fp,24
-	li	$a1,1			# 0x1
-	li	$a2,3			# 0x3
-	lw	$a3,72($fp)
-	la	$t9,fread
-	jal	$ra,$t9
-	sw	$v0,40($fp)
-$L53:
-	lw	$v0,40($fp)
-	bgtz	$v0,$L55
-	b	$L54
-$L55:
-	lw	$v0,40($fp)
-	slt	$v0,$v0,3
-	beq	$v0,$zero,$L56
-	sb	$zero,26($fp)
-$L56:
-	lw	$v0,40($fp)
-	slt	$v0,$v0,2
-	beq	$v0,$zero,$L57
-	sb	$zero,25($fp)
-$L57:
-	addu	$v0,$fp,32
-	addu	$a0,$fp,24
-	move	$a1,$v0
-	la	$t9,encode_to_base64
-	jal	$ra,$t9
-	bne	$v0,$zero,$L58
-	li	$v0,3			# 0x3
-	sw	$v0,48($fp)
-	b	$L52
-$L58:
-	addu	$v0,$fp,32
-	lw	$a0,40($fp)
-	move	$a1,$v0
-	la	$t9,add_padding
-	jal	$ra,$t9
-	addu	$v0,$fp,32
-	move	$a0,$v0
-	li	$a1,1			# 0x1
-	li	$a2,4			# 0x4
-	lw	$a3,76($fp)
-	la	$t9,fwrite
-	jal	$ra,$t9
-	sw	$v0,44($fp)
-	lw	$v1,44($fp)
-	li	$v0,4			# 0x4
-	beq	$v1,$v0,$L59
-	li	$v0,5			# 0x5
-	sw	$v0,48($fp)
-	b	$L52
-$L59:
-	addu	$a0,$fp,24
-	li	$a1,1			# 0x1
-	li	$a2,3			# 0x3
-	lw	$a3,72($fp)
-	la	$t9,fread
-	jal	$ra,$t9
-	sw	$v0,40($fp)
-	b	$L53
-$L54:
-	sw	$zero,48($fp)
-$L52:
-	lw	$v0,48($fp)
-	move	$sp,$fp
-	lw	$ra,64($sp)
-	lw	$fp,60($sp)
-	addu	$sp,$sp,72
-	j	$ra
-	.end	encode
+.LFB8:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$40, %esp
+	call	set_endianess
+	movl	8(%ebp), %eax
+	movl	%eax, 12(%esp)
+	movl	$3, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-19(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fread
+	movl	%eax, -12(%ebp)
+	jmp	.L34
+.L40:
+	cmpl	$2, -12(%ebp)
+	jg	.L35
+	movb	$0, -17(%ebp)
+.L35:
+	cmpl	$1, -12(%ebp)
+	jg	.L36
+	movb	$0, -18(%ebp)
+.L36:
+	leal	-23(%ebp), %eax
+	movl	%eax, 4(%esp)
+	leal	-19(%ebp), %eax
+	movl	%eax, (%esp)
+	call	encode_to_base64
+	xorl	$1, %eax
+	testb	%al, %al
+	je	.L37
+	movl	$3, %eax
+	jmp	.L41
+.L37:
+	leal	-23(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	-12(%ebp), %eax
+	movl	%eax, (%esp)
+	call	add_padding
+	movl	12(%ebp), %eax
+	movl	%eax, 12(%esp)
+	movl	$4, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-23(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fwrite
+	movl	%eax, -16(%ebp)
+	cmpl	$4, -16(%ebp)
+	je	.L39
+	movl	$5, %eax
+	jmp	.L41
+.L39:
+	movl	8(%ebp), %eax
+	movl	%eax, 12(%esp)
+	movl	$3, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-19(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fread
+	movl	%eax, -12(%ebp)
+.L34:
+	cmpl	$0, -12(%ebp)
+	jg	.L40
+	movl	$0, %eax
+.L41:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE8:
 	.size	encode, .-encode
-	.align	2
 	.globl	decode
-	.ent	decode
+	.type	decode, @function
 decode:
-	.frame	$fp,80,$ra		# vars= 40, regs= 3/0, args= 16, extra= 8
-	.mask	0xd0000000,-8
-	.fmask	0x00000000,0
-	.set	noreorder
-	.cpload	$t9
-	.set	reorder
-	subu	$sp,$sp,80
-	.cprestore 16
-	sw	$ra,72($sp)
-	sw	$fp,68($sp)
-	sw	$gp,64($sp)
-	move	$fp,$sp
-	sw	$a0,80($fp)
-	sw	$a1,84($fp)
-	la	$t9,set_endianess
-	jal	$ra,$t9
-	sw	$zero,40($fp)
-	addu	$a0,$fp,24
-	li	$a1,1			# 0x1
-	li	$a2,4			# 0x4
-	lw	$a3,80($fp)
-	la	$t9,fread
-	jal	$ra,$t9
-	sw	$v0,44($fp)
-$L61:
-	lw	$v0,44($fp)
-	bgtz	$v0,$L63
-	b	$L62
-$L63:
-	lw	$v0,44($fp)
-	slt	$v0,$v0,4
-	beq	$v0,$zero,$L64
-	li	$v0,3			# 0x3
-	sw	$v0,56($fp)
-	b	$L60
-$L64:
-	addu	$v0,$fp,32
-	addu	$v1,$fp,40
-	addu	$a0,$fp,24
-	move	$a1,$v0
-	move	$a2,$v1
-	la	$t9,decode_from_base64
-	jal	$ra,$t9
-	bne	$v0,$zero,$L65
-	li	$v0,4			# 0x4
-	sw	$v0,56($fp)
-	b	$L60
-$L65:
-	li	$v0,3			# 0x3
-	sw	$v0,48($fp)
-	lw	$v0,40($fp)
-	beq	$v0,$zero,$L66
-	lw	$v1,40($fp)
-	li	$v0,1			# 0x1
-	bne	$v1,$v0,$L67
-	li	$v0,2			# 0x2
-	sw	$v0,48($fp)
-$L67:
-	lw	$v1,40($fp)
-	li	$v0,2			# 0x2
-	bne	$v1,$v0,$L66
-	li	$v0,1			# 0x1
-	sw	$v0,48($fp)
-$L66:
-	addu	$v0,$fp,32
-	move	$a0,$v0
-	li	$a1,1			# 0x1
-	lw	$a2,48($fp)
-	lw	$a3,84($fp)
-	la	$t9,fwrite
-	jal	$ra,$t9
-	sw	$v0,52($fp)
-	lw	$v1,52($fp)
-	lw	$v0,48($fp)
-	beq	$v1,$v0,$L69
-	li	$v0,5			# 0x5
-	sw	$v0,56($fp)
-	b	$L60
-$L69:
-	addu	$a0,$fp,24
-	li	$a1,1			# 0x1
-	li	$a2,4			# 0x4
-	lw	$a3,80($fp)
-	la	$t9,fread
-	jal	$ra,$t9
-	sw	$v0,44($fp)
-	b	$L61
-$L62:
-	sw	$zero,56($fp)
-$L60:
-	lw	$v0,56($fp)
-	move	$sp,$fp
-	lw	$ra,72($sp)
-	lw	$fp,68($sp)
-	addu	$sp,$sp,80
-	j	$ra
-	.end	decode
+.LFB9:
+	.cfi_startproc
+	pushl	%ebp
+	.cfi_def_cfa_offset 8
+	.cfi_offset 5, -8
+	movl	%esp, %ebp
+	.cfi_def_cfa_register 5
+	subl	$56, %esp
+	call	set_endianess
+	movl	$0, -32(%ebp)
+	movl	8(%ebp), %eax
+	movl	%eax, 12(%esp)
+	movl	$4, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-24(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fread
+	movl	%eax, -12(%ebp)
+	jmp	.L43
+.L50:
+	cmpl	$3, -12(%ebp)
+	jg	.L44
+	movl	$3, %eax
+	jmp	.L51
+.L44:
+	leal	-32(%ebp), %eax
+	movl	%eax, 8(%esp)
+	leal	-27(%ebp), %eax
+	movl	%eax, 4(%esp)
+	leal	-24(%ebp), %eax
+	movl	%eax, (%esp)
+	call	decode_from_base64
+	xorl	$1, %eax
+	testb	%al, %al
+	je	.L46
+	movl	$4, %eax
+	jmp	.L51
+.L46:
+	movl	$3, -16(%ebp)
+	movl	-32(%ebp), %eax
+	testl	%eax, %eax
+	je	.L47
+	movl	-32(%ebp), %eax
+	cmpl	$1, %eax
+	jne	.L48
+	movl	$2, -16(%ebp)
+.L48:
+	movl	-32(%ebp), %eax
+	cmpl	$2, %eax
+	jne	.L47
+	movl	$1, -16(%ebp)
+.L47:
+	movl	-16(%ebp), %eax
+	movl	12(%ebp), %edx
+	movl	%edx, 12(%esp)
+	movl	%eax, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-27(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fwrite
+	movl	%eax, -20(%ebp)
+	movl	-20(%ebp), %eax
+	cmpl	-16(%ebp), %eax
+	je	.L49
+	movl	$5, %eax
+	jmp	.L51
+.L49:
+	movl	8(%ebp), %eax
+	movl	%eax, 12(%esp)
+	movl	$4, 8(%esp)
+	movl	$1, 4(%esp)
+	leal	-24(%ebp), %eax
+	movl	%eax, (%esp)
+	call	fread
+	movl	%eax, -12(%ebp)
+.L43:
+	cmpl	$0, -12(%ebp)
+	jg	.L50
+	movl	$0, %eax
+.L51:
+	leave
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE9:
 	.size	decode, .-decode
-	.ident	"GCC: (GNU) 3.3.3 (NetBSD nb3 20040520)"
+	.ident	"GCC: (Debian 4.8.2-16) 4.8.2"
+	.section	.note.GNU-stack,"",@progbits
