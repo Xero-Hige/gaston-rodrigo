@@ -1,12 +1,12 @@
 #TODO : Creo que esto se puede sacar, ver
+
 #include <mips/regdef.h>
 
 
 #void count(char c, int* lines, int* words)
 .text
 .align 2
-.globl wc
-.extern count
+.globl count
 
 count:
 	subu sp,sp, 64 # Reservo espacio para argumentos que a lo mejor no uso TODO: Borrar en caso de que sobre 
@@ -59,4 +59,5 @@ fin_count:
 
 	addiu sp,sp,64
 	jr ra
+
 

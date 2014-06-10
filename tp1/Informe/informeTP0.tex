@@ -124,7 +124,7 @@ Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. 
 	Para poder compilar el proyecto en NetBSD, se debe ejecutar el comando:
 	
 	\begin{center}
-	\texttt{Gcc -c -S -O0 -mrnames arg_parse.c base_64.c main.c} 
+	\texttt{Gcc -c -S -O0 arg\_parse.c base\_64.c main.c} 
 	\end{center}
 	
 	
@@ -161,17 +161,7 @@ Para parsear los parámetros se usaron las funciones definidas en arg\_parse.h. 
 	\end{figure}
 	
 	\newpage
-\appendix
-\section{Codigo C}
 
-\captionlisting{../arg_parse.h}
-\captionlisting{../arg_parse.c}
-
-\captionlisting{../base_64.h}
-\captionlisting{../base_64.c}
-
-\captionlisting{../main.c}
-\newpage
 \section{Makefile}
 
 \lstinputlisting[language=make,

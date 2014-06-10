@@ -17,3 +17,6 @@ valgrind: $(EXEC)
 
 clean:
 	- $(RM) *.o $(EXEC)
+
+pdf: clean
+	a2ps *.h *.c  -Av --header="[66.20] Organizacion de computadoras" --footer="Curso Jueves - Tp0" --line-numbers=1 --borders=yes --columns=2  --landscape --output="Codigo Tp0" --encoding="ISO-8859-1" --tabsize=4 --major=columns --toc  | ps2pdf "Codigo Tp0" fuente.pdf
