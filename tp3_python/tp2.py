@@ -32,7 +32,7 @@ def main (argv):
         print "Error de apertura del archivo"
         return 1
 
-    letter_list=[ chr(x) for x in range(256)]
+    letter_list=[ chr(x) for x in range(32,127)]
     possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
 
     line_number = 0
