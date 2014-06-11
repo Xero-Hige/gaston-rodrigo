@@ -3,11 +3,11 @@
 
 import sys
 from hashlib import md5 as MD5
-from itertools import combinations_with_replacement as combinations
+from itertools import product as combinations
 
 def decrypt (hashed_pass,possible_passwords):
     for password in possible_passwords:
-        if str(MD5(password).hexdigest()) == hashed_pass:
+        if MD5(password).hexdigest() == hashed_pass:
             return password
     return None
         
@@ -33,7 +33,7 @@ def main (argv):
         return 1
 
     letter_list=[ chr(x) for x in range(256)]
-    possible_passwords = ["".join(x) for x in combinations(letter_list,password_len)]
+    possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
 
     line_number = 0
 
