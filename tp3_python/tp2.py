@@ -23,7 +23,8 @@ def print_password(password,line_number):
 
      
 def match_passwords_file(pass_file,password_len):
-    """ """
+    """Dado un archivo abierto y una longitud de passwords, intenta desencriptar
+        los passwords encriptados en el"""
     letter_list=[ chr(x) for x in range(32,127)]
     possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
 
@@ -34,10 +35,12 @@ def match_passwords_file(pass_file,password_len):
         line = line.rstrip()
 
         password = decrypt(line,possible_passwords);
-        print_password(password)
+        print_password(password,line)
 
 def find_salt(possible_passwords,possible_salts,hashed_pass):
-    """ """
+    """Funcion que dada una lista de posibles passwords y sales, devuelve a que
+        par password-sal corresponde la linea hasheada pasada. En caso de no coincidir,
+        devuelve None-None"""
     for password in possible_passwords:
         for salt in possible_salts:
             salted_pass = "".join([password,salt])
@@ -46,7 +49,8 @@ def find_salt(possible_passwords,possible_salts,hashed_pass):
     return None,None
 
 def match_salted_passwords(pass_file,password_len,salt_len):
-    """ """
+    """Dado un archivo abierto, una longitud de passwords y una longitud de sal, intenta
+        desencriptar los passwords encriptados en el, tomando como sal la primer sal ha"""
     letter_list=[ chr(x) for x in range(32,127) ]
     possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
     possible_salts =  ["".join(x) for x in combinations(letter_list,repeat=salt_len)]
@@ -76,11 +80,12 @@ def match_salted_passwords(pass_file,password_len,salt_len):
 
 
 def main (argv):
-    """ """
+    """Funcion principal"""
     if len(argv) < 3:
         print "Uso tp2.py <password_file> <password_len> [<salt_len>]"
         return 1
 
+    salt_len = 0
     password_file = argv[1]
 
     try:
@@ -99,7 +104,7 @@ def main (argv):
         try:
             salt_len = int(argv[3])
         except:
-            salt_len = 0
+            pass
     
     if salt_len == 0:
         match_passwords_file(pass_file,password_len)
