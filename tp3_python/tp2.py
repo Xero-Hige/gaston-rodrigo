@@ -35,7 +35,7 @@ def match_passwords_file(pass_file,password_len):
         line = line.rstrip()
 
         password = decrypt(line,possible_passwords);
-        print_password(password,line)
+        print_password(password,line_number)
 
 def find_salt(possible_passwords,possible_salts,hashed_pass):
     """Funcion que dada una lista de posibles passwords y sales, devuelve a que
