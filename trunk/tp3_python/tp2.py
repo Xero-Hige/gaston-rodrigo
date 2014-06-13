@@ -111,5 +111,7 @@ def main (argv):
     else:
         match_salted_passwords(pass_file,password_len,salt_len)
 
+    pass_file.close()
+
 if __name__ == "__main__":
     main(sys.argv)
