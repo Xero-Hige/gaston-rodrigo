@@ -1,0 +1,118 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+from hashlib import md5 as MD5
+from itertools import product as combinations
+
+def decrypt (hashed_pass,possible_passwords,hashed_possible_passwords):
+    """"""
+    for index in xrange(len(possible_passwords)):
+        if hashed_possible_passwords[index] == hashed_pass:
+            return possible_passwords[index]
+    return None
+
+def print_password(password,line_number):
+    """Imprime por consola el password que se le pasa conjuntamente con el numero
+        de linea. Si password es None, imprime un mensaje de error"""
+    if not password:
+        print "Line "+str(line_number)+": Error, no matching password"
+    else:
+        print "Line "+str(line_number)+": Password '"+password+"' matches"
+
+     
+def match_passwords_file(pass_file,password_len):
+    """Dado un archivo abierto y una longitud de passwords, intenta desencriptar
+        los passwords encriptados en el"""
+    letter_list=[ chr(x) for x in xrange(32,127)]
+    possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
+    hashed_possible_passwords = [MD5(x).hexdigest() for x in possible_passwords]
+
+    line_number = 0
+
+    for line in pass_file:
+        line_number += 1
+        line = line.rstrip()
+
+        password = decrypt(line,possible_passwords,hashed_possible_passwords);
+        print_password(password,line_number)
+
+def find_salt(possible_passwords,possible_salts,hashed_pass):
+    """Funcion que dada una lista de posibles passwords y sales, devuelve a que
+        par password-sal corresponde la linea hasheada pasada. En caso de no coincidir,
+        devuelve None-None"""
+    for password in possible_passwords:
+        for salt in possible_salts:
+            salted_pass = "".join([password,salt])
+            if MD5(salted_pass).hexdigest() == hashed_pass:
+                return password,salt
+    return None,None
+
+def match_salted_passwords(pass_file,password_len,salt_len):
+    """Dado un archivo abierto, una longitud de passwords y una longitud de sal, intenta
+        desencriptar los passwords encriptados en el, tomando como sal la primer sal ha"""
+    letter_list=[ chr(x) for x in xrange(32,127) ]
+    possible_passwords = ["".join(x) for x in combinations(letter_list,repeat=password_len)]
+    possible_salts =  ["".join(x) for x in combinations(letter_list,repeat=salt_len)]
+
+    line_number = 0
+
+    line = pass_file.readline().rstrip()
+
+    password,salt = find_salt(possible_passwords,possible_salts,line)
+    print_password(password,line_number)
+
+    while not salt:
+        line_number += 1
+        password,salt = find_salt(possible_passwords,possible_salts,line)
+        print_password(password,line_number)
+        
+    possible_passwords = [ x+salt for x in possible_passwords ]
+    hashed_possible_passwords = [MD5(x).hexdigest() for x in possible_passwords]
+
+    for line in pass_file:
+        line_number += 1
+        line = line.rstrip()
+
+        password = decrypt(line,possible_passwords,hashed_possible_passwords);
+        if password:
+            password = password[:password_len-salt_len-1]
+        print_password(password,line_number)
+
+
+def main (argv):
+    """Funcion principal"""
+    if len(argv) < 3:
+        print "Uso tp2.py <password_file> <password_len> [<salt_len>]"
+        return 1
+
+    salt_len = 0
+    password_file = argv[1]
+
+    try:
+        password_len = int(argv[2])
+    except:
+        print "La longitud debe ser un numero natural"
+        return 1
+
+    try:
+        pass_file = open(password_file)
+    except IOError:
+        print "Error de apertura del archivo"
+        return 1
+
+    if len(argv) == 4:
+        try:
+            salt_len = int(argv[3])
+        except:
+            pass
+    
+    if salt_len == 0:
+        match_passwords_file(pass_file,password_len)
+    else:
+        match_salted_passwords(pass_file,password_len,salt_len)
+
+    pass_file.close()
+
+if __name__ == "__main__":
+    main(sys.argv)
