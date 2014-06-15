@@ -1,0 +1,41 @@
+Line 1: Password 'Iha' matches
+Line 2: Password 'vet' matches
+Line 3: Password 'hef' matches
+Line 4: Password 'eel' matches
+Line 5: Password 'ing' matches
+Line 6: Password 'Som' matches
+Line 7: Password 'ebo' matches
+Line 8: Password 'dys' matches
+Line 9: Password 'wat' matches
+Line 10: Password 'chi' matches
+Line 11: Password 'ngm' matches
+         2572297 function calls in 10.871 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.003    0.003    0.004    0.004 hashlib.py:55(<module>)
+        6    0.000    0.000    0.000    0.000 hashlib.py:94(__get_openssl_constructor)
+       11    0.001    0.000    0.001    0.000 tp2_opt.py:15(print_password)
+        1    4.315    4.315   10.749   10.749 tp2_opt.py:24(match_passwords_file)
+        1    0.000    0.000   10.871   10.871 tp2_opt.py:4(<module>)
+       11    1.022    0.093    1.022    0.093 tp2_opt.py:8(decrypt)
+        1    0.117    0.117   10.867   10.867 tp2_opt.py:83(main)
+   857376    1.853    0.000    1.853    0.000 {_hashlib.openssl_md5}
+        1    0.000    0.000    0.000    0.000 {_hashlib.openssl_sha1}
+        1    0.000    0.000    0.000    0.000 {_hashlib.openssl_sha224}
+        1    0.000    0.000    0.000    0.000 {_hashlib.openssl_sha256}
+        1    0.000    0.000    0.000    0.000 {_hashlib.openssl_sha384}
+        1    0.000    0.000    0.000    0.000 {_hashlib.openssl_sha512}
+       95    0.000    0.000    0.000    0.000 {chr}
+        6    0.000    0.000    0.000    0.000 {getattr}
+        6    0.000    0.000    0.000    0.000 {globals}
+       13    0.000    0.000    0.000    0.000 {len}
+        1    0.000    0.000    0.000    0.000 {method 'close' of 'file' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+   857375    2.256    0.000    2.256    0.000 {method 'hexdigest' of '_hashlib.HASH' objects}
+   857375    1.302    0.000    1.302    0.000 {method 'join' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {open}
+
+
