@@ -1,0 +1,116 @@
+% ------ Clase de documento ------
+\documentclass[a4paper,10pt,oneside]{article}
+
+%-------------------------------------Paquetes-----------------------------------------------------------------------
+\usepackage[spanish]{babel}  	% Traduce los textos a castellano
+%\usepackage[utf8]{inputenc}	% Permite escribir directamente áéíóúñ
+\usepackage{t1enc}            	% Agrega caracteres extendidos al font
+\usepackage{amsmath} 		%Permite imprimir mas opcciones matematicas
+\usepackage{graphicx}		%Permite agregar imagenes al informe
+\usepackage{multicol}  		%Permite dividir el texto en varias columnas
+\usepackage{anysize}		%Permite modificar los margenes del documento
+\usepackage{float} 		%Permite utilizar H para colocar las imagenes en un lugar especifico 
+\usepackage{multirow}		%Permite dividir las tablas en subtablas
+\usepackage{booktabs}		%Permiten manejar mejor el tamaño de las tablas
+\usepackage{tabulary}		%Permiten manejar mejor el tamaño de las tablas
+\usepackage{fancyhdr}		%Permite agregar encabezado y pie fancy
+\usepackage{marvosym}
+
+
+% ------ Paquetes ------
+\usepackage{graphicx}
+\usepackage{bmpsize}
+\usepackage[latin1]{inputenc}
+%\usepackage[activeacute,spanish]{babel}
+\usepackage{verbatim}
+
+% ------ Configuraci�n ------
+\title{\textbf{Trabajo Pr�ctico 2: Profiling y Optimizaci�n}}
+
+\author{    Burdet Rodrigo, \textit{Padr�n Nro. 93440}\\
+            \texttt{ rodrigoburdet@gmail.com}\\\\
+            Romani Nazareno, \textit{Padr�n Nro. 83991}                     \\
+            \texttt{ nazareno.romani@gmail.com}\\\\
+            Martinez Gaston Alberto, \textit{Padr�n Nro. 91383}                     \\
+            \texttt{ gaston.martinez.90@gmail.com }\\\\[2.5ex]
+            \normalsize{1er. Cuatrimestre de 2014}                       \\
+            \normalsize66.20 Organizaci�n de Computadoras\\
+            \normalsize{Facultad de Ingenier�a, Universidad de Buenos Aires}            \\
+       }
+\date{\today}
+
+
+
+% ----- Cuerpo del documento -----
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+
+\newpage
+
+\section{Objetivos}
+	Familiarizarse con las t�cnicas y herramientas de profiling y optimizaci�n de
+software, implementando y optimizando un programa que busca descubrir
+la contrase�as hasheadas en un archivo.
+
+\section{Resumen}
+Utilizaremos la herramienta \textbf{cProfile} [1], que nos permitir� medir los tiempos que el programa pasa en cada funcion particular.\\
+Para el desarrollo, supondremos que hemos conseguido algunos archivos con contrase�as y queremos descubrir las contrase�as originales. Sabemos que el m�todo usado para calcular el hash es MD5 [2], de manera que el m�todo a seguir ser� ir probando cada combinaci�n posible, comparando su hash MD5 con el de la contrase�a que queremos descifrar. Sabemos que el primer archivo es de un sistema donde la gente s�lo usa passwords de una
+letra, el segundo es de passwords de dos letras, el tercero es de passwords de tres letras, y el cuarto es de passwords de una letra, pero a los que se les agrega una 'sal' de dos caracteres, cuyo valor desconocemos, antes de calcular el hash.
+	
+\subsection{Profiling}
+
+El profiling permite aprender donde el programa pasa la mayor parte de su tiempo, y cuales funciones llaman a otras mientras se ejecuta.\\
+ 	Esta informacion puede mostrar qu� piezas del programa son mas lentas de lo esperado, convirti�ndolas en candidatas para su reescritura en la etapa de optimizaci�n.\\
+ 	Tambi�n puede ayudarnos a descubrir cuales funciones son llamadas m�s o menos veces de lo esperado, pudiendo as� encontrar nuevos bugs (aunque el descubrimiento de bugs no es el fin principal de esta etapa.
+ 			   
+El profiler utiliza informaci�n recolectada en tiempo de ejecuci�n, por lo que puede ser utilizado en programas demasiado grandes o complejos, donde un an�lisis por lectura de fuentes ser�a impracticable.\\
+Como consecuencia del an�lisis durante la ejecuci�n, los datos con los que se corra el programa afectaran el resultado del profiler. 
+	Es decir, distintos datos de entrada pueden provocar distintas ramas de ejecuci�n, dando por resultado que, por ejemplo, no se llamen algunas funciones.
+
+\subsection{Herramientas de Profiling}
+
+\subsubsection{cProfile}
+
+"cProfile" es un modulo de python que provee herramientas de profiling y provee estad�sticas de un script. B�sicamente, inspecciona cada funci�n e inserta c�digo al principio y final de cada una para obtener informaci�n del tiempo de ejecuci�n. Cuando ejecutamos nuestro programa normalmente, imprimira el resultado de la corrida por la salida estandar. Para poder guardarlo en un archivo se debe redirigir la misma a un archivo. \\
+
+\begin{center} \texttt{python -m cProfile [programa].py [param\_1,param\_2,...,param\_N] > [programa].stats} \end{center}
+
+En ese archivo podremos ver, entre otras cosas, el porcentaje del tiempo de ejecucion de cada funci�n de nuestro programa. De esta forma, podremos determinar qu� funciones estan llevando mucho tiempo de ejecuci�n, y esas ser�n elegidas para optimizar.
+	
+\section{Desarrollo}
+	El programa consiste en tomar como entrada el nombre de un archivo y la longitud de las contrase�as que est�n hasheadas en �l, encontrar qu� contrase�as son buscando un string que d� el mismo hash \textbf{MD5} [2] , y devuelva los valores de las contrase�as encontradas.
+			
+\section{Ejecutar}
+	
+\begin{center} \texttt{python tp2.py <password\_file> <password\_len> [salt\_len]} \end{center}
+
+\section{Mediciones}
+
+\subsection{Mediciones de solucion no optimizada}
+\verbatiminput{./non_opt_res.txt}
+\newpage
+
+\subsection{Mediciones de solucion optimizada}
+\verbatiminput{./opt_res.txt}
+
+\subsection{An�lisis de los datos}
+	
+\newpage	
+\section{Conclusiones}	
+Mediante un an�lisis del c�digo fuente a simple vista y con herramientas de perfilado como gprof, logramos poder determinar cu�les eran los causantes del bajo desempe�o del programa y cu�les eran los cuellos de botella que hac�an que el programa tarde un poco m�s. De esta forma, pudimos optimizar el programa y lograr que se ejecute mejor.
+
+Tambi�n pudimos aprender el manejo de estas herramientas de perfilado, y que es importante tener en cuenta el entorno en el que estamos trabajando (es decir, la jerarqu�a de memorias, cpu, etc), si es que queremos que un programa se ejecute de forma �ptima en �l.
+
+	
+% Citas bibliogr�ficas.
+\begin{thebibliography}{99}
+
+[1] cProfile - https://docs.python.org/2/library/profile.html             
+\newline	
+[2] MD5 - http://es.wikipedia.org/wiki/MD5 \\
+
+\end{thebibliography}
+
+\end{document}
