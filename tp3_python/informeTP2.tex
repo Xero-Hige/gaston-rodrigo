@@ -1,41 +1,25 @@
 % ------ Clase de documento ------
 \documentclass[a4paper,10pt,oneside]{article}
 
-%-------------------------------------Paquetes-----------------------------------------------------------------------
-\usepackage[spanish]{babel}  	% Traduce los textos a castellano
-%\usepackage[utf8]{inputenc}	% Permite escribir directamente Ã¡Ã©Ã­Ã³ÃºÃ±
-\usepackage{t1enc}            	% Agrega caracteres extendidos al font
-\usepackage{amsmath} 		%Permite imprimir mas opcciones matematicas
-\usepackage{graphicx}		%Permite agregar imagenes al informe
-\usepackage{multicol}  		%Permite dividir el texto en varias columnas
-\usepackage{anysize}		%Permite modificar los margenes del documento
-\usepackage{float} 		%Permite utilizar H para colocar las imagenes en un lugar especifico 
-\usepackage{multirow}		%Permite dividir las tablas en subtablas
-\usepackage{booktabs}		%Permiten manejar mejor el tamaÃ±o de las tablas
-\usepackage{tabulary}		%Permiten manejar mejor el tamaÃ±o de las tablas
-\usepackage{fancyhdr}		%Permite agregar encabezado y pie fancy
-\usepackage{marvosym}
-
-
 % ------ Paquetes ------
 \usepackage{graphicx}
 \usepackage{bmpsize}
 \usepackage[latin1]{inputenc}
-%\usepackage[activeacute,spanish]{babel}
+\usepackage[activeacute,spanish]{babel}
 \usepackage{verbatim}
 
-% ------ Configuraciï¿½n ------
-\title{\textbf{Trabajo Prï¿½ctico 2: Profiling y Optimizaciï¿½n}}
+% ------ Configuración ------
+\title{\textbf{Trabajo Práctico 2: Profiling y Optimización}}
 
-\author{    Burdet Rodrigo, \textit{Padrï¿½n Nro. 93440}\\
+\author{    Burdet Rodrigo, \textit{Padrón Nro. 93440}\\
             \texttt{ rodrigoburdet@gmail.com}\\\\
-            Romani Nazareno, \textit{Padrï¿½n Nro. 83991}                     \\
+            Romani Nazareno, \textit{Padrón Nro. 83991}                     \\
             \texttt{ nazareno.romani@gmail.com}\\\\
-            Martinez Gaston Alberto, \textit{Padrï¿½n Nro. 91383}                     \\
+            Martinez Gaston Alberto, \textit{Padrón Nro. 91383}                     \\
             \texttt{ gaston.martinez.90@gmail.com }\\\\[2.5ex]
             \normalsize{1er. Cuatrimestre de 2014}                       \\
-            \normalsize66.20 Organizaciï¿½n de Computadoras\\
-            \normalsize{Facultad de Ingenierï¿½a, Universidad de Buenos Aires}            \\
+            \normalsize66.20 Organización de Computadoras\\
+            \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
        }
 \date{\today}
 
@@ -50,61 +34,118 @@
 \newpage
 
 \section{Objetivos}
-	Familiarizarse con las tï¿½cnicas y herramientas de profiling y optimizaciï¿½n de
+	Familiarizarse con las técnicas y herramientas de profiling y optimización de
 software, implementando y optimizando un programa que busca descubrir
-la contraseï¿½as hasheadas en un archivo.
+la contraseñas hasheadas en un archivo.
 
 \section{Resumen}
-Utilizaremos la herramienta \textbf{cProfile} [1], que nos permitirï¿½ medir los tiempos que el programa pasa en cada funcion particular.\\
-Para el desarrollo, supondremos que hemos conseguido algunos archivos con contraseï¿½as y queremos descubrir las contraseï¿½as originales. Sabemos que el mï¿½todo usado para calcular el hash es MD5 [2], de manera que el mï¿½todo a seguir serï¿½ ir probando cada combinaciï¿½n posible, comparando su hash MD5 con el de la contraseï¿½a que queremos descifrar. Sabemos que el primer archivo es de un sistema donde la gente sï¿½lo usa passwords de una
-letra, el segundo es de passwords de dos letras, el tercero es de passwords de tres letras, y el cuarto es de passwords de una letra, pero a los que se les agrega una 'sal' de dos caracteres, cuyo valor desconocemos, antes de calcular el hash.
+	Utilizaremos la herramienta \textbf{cProfile} [1], que nos permitirá medir el tiempo que el programa pasa en cada funcion particular.\\
+	Para el desarrollo, supondremos que hemos conseguido algunos archivos con contraseñas y queremos descubrir las contraseñas originales. Sabemos que el método usado para calcular el hash es \textbf{MD5} [2], de manera que la soluciòn será ir probando cada combinación posible, comparando su hash MD5 con el de la contraseña que queremos descifrar. Sabemos que el primer archivo es de un sistema donde la gente sólo usa passwords de una
+letra, el segundo es de passwords de dos letras, el tercero es de passwords de tres letras, y el cuarto es de passwords de una letra, pero a los que se les agrega una 'sal'  de dos caracteres, cuyo valor desconocemos, antes de calcular el hash.
 	
 \subsection{Profiling}
 
-El profiling permite aprender donde el programa pasa la mayor parte de su tiempo, y cuales funciones llaman a otras mientras se ejecuta.\\
- 	Esta informacion puede mostrar quï¿½ piezas del programa son mas lentas de lo esperado, convirtiï¿½ndolas en candidatas para su reescritura en la etapa de optimizaciï¿½n.\\
- 	Tambiï¿½n puede ayudarnos a descubrir cuales funciones son llamadas mï¿½s o menos veces de lo esperado, pudiendo asï¿½ encontrar nuevos bugs (aunque el descubrimiento de bugs no es el fin principal de esta etapa.
+El profiling permite aprender dónde el programa pasa la mayor parte de su tiempo, y cuáles son las funciones que llaman a otras mientras se ejecuta.\\
+ 	Esta información puede mostrar qué piezas del programa son mas lentas de lo esperado, convirtiéndolas en candidatas para su reescritura en la etapa de optimización.\\
+ 	También puede ayudarnos a descubrir cuales funciones son llamadas más o menos veces de lo esperado, pudiendo así encontrar nuevos bugs (aunque el descubrimiento de bugs no es el fin principal de esta etapa).
  			   
-El profiler utiliza informaciï¿½n recolectada en tiempo de ejecuciï¿½n, por lo que puede ser utilizado en programas demasiado grandes o complejos, donde un anï¿½lisis por lectura de fuentes serï¿½a impracticable.\\
-Como consecuencia del anï¿½lisis durante la ejecuciï¿½n, los datos con los que se corra el programa afectaran el resultado del profiler. 
-	Es decir, distintos datos de entrada pueden provocar distintas ramas de ejecuciï¿½n, dando por resultado que, por ejemplo, no se llamen algunas funciones.
+El profiler utiliza información recolectada en tiempo de ejecución, por lo que puede ser utilizado en programas demasiado grandes o complejos, donde un análisis por lectura de fuentes sería impracticable.
+
+Como consecuencia del análisis durante la ejecución, los datos con los que se corra el programa afectaran el resultado del profiler. 
+	Es decir, distintos datos de entrada pueden provocar distintas ramas de ejecución, dando por resultado que, por ejemplo, no se llamen algunas funciones.
 
 \subsection{Herramientas de Profiling}
 
 \subsubsection{cProfile}
 
-"cProfile" es un modulo de python que provee herramientas de profiling y provee estadï¿½sticas de un script. Bï¿½sicamente, inspecciona cada funciï¿½n e inserta cï¿½digo al principio y final de cada una para obtener informaciï¿½n del tiempo de ejecuciï¿½n. Cuando ejecutamos nuestro programa normalmente, imprimira el resultado de la corrida por la salida estandar. Para poder guardarlo en un archivo se debe redirigir la misma a un archivo. \\
+cProfile es un modulo de python que provee herramientas de profiling y provee estadísticas de un script. Básicamente, inspecciona cada función e inserta código al principio y final de cada una, para obtener información del tiempo de ejecución. Cuando ejecutamos nuestro programa normalmente, imprimira el resultado de la corrida por la salida estandar. Para poder guardarlo en un archivo, se debe redirigir la misma, de la siguiente manera: \\
 
 \begin{center} \texttt{python -m cProfile [programa].py [param\_1,param\_2,...,param\_N] > [programa].stats} \end{center}
 
-En ese archivo podremos ver, entre otras cosas, el porcentaje del tiempo de ejecucion de cada funciï¿½n de nuestro programa. De esta forma, podremos determinar quï¿½ funciones estan llevando mucho tiempo de ejecuciï¿½n, y esas serï¿½n elegidas para optimizar.
+En ese archivo podremos ver, entre otras cosas, el porcentaje del tiempo de ejecucion de cada función de nuestro programa. De esta forma, podremos determinar qué funciones estan llevando mucho tiempo de ejecución, y esas serán elegidas para optimizar.
 	
 \section{Desarrollo}
-	El programa consiste en tomar como entrada el nombre de un archivo y la longitud de las contraseï¿½as que estï¿½n hasheadas en ï¿½l, encontrar quï¿½ contraseï¿½as son buscando un string que dï¿½ el mismo hash \textbf{MD5} [2] , y devuelva los valores de las contraseï¿½as encontradas.
+	Se trata de una versión del programa desarrollada en lenguaje python. El mismo consiste en tomar como entrada el nombre de un archivo y la longitud de las contraseñas que están hasheadas en él, encontrar qué contraseñas son buscando un string que dé el mismo hash \textbf{MD5} , y devuelva los valores de las contraseñas encontradas.
 			
-\section{Ejecutar}
+\section{Ejecución}
+Para poder ejecutar el programa, se debe ingresar el siguiente comando: 
 	
-\begin{center} \texttt{python tp2.py <password\_file> <password\_len> [salt\_len]} \end{center}
+\begin{center} \texttt{python tp2.py <password\_file>  <password\_len>  [salt\_len]} \end{center}
 
-\section{Mediciones}
+\section{Passwords recuperadas}
+Las passwords recuperadas, según cada archivo , fueron las siguientes: 
 
-\subsection{Mediciones de solucion no optimizada}
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1\textwidth]{1.png}
+\end{center}
+\caption{Passwords de una letra} \label{fig001}
+\end{figure}
+\newpage
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1\textwidth]{2.png}
+\end{center}
+\caption{Passwords de dos letras} \label{fig002}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1\textwidth]{3.png}
+\end{center}
+\caption{Passwords de tres letras} \label{fig003}
+\end{figure}
+
+\newpage
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1\textwidth]{4.png}
+\end{center}
+\caption{Passwords de una letra mas 'sal'  de 2 caracteres} \label{fig004}
+\end{figure}
+
+\section{Optimización del algoritmo y resultados}
+
+En esta sección se expondrán los resultados obtenidos de las mejoras introducidas en el código, basados en las pruebas realizadas.\\
+Según el profiler, el programa pasaba la mayor parte del tiempo ejecutando el algoritmo \textbf{MD5}. Por tal motivo, 
+decidimos cambiar la implementación de nuestro programa original, que en un principio realizaba un ''ataque iterativo'' , para que realice un ''ataque por tablas'' . \\
+De esta forma, logramos reducir la cantidad de veces que se ejecuta MD5 y, por ende, mejorar notablemente la performance de nuestro programa.
+
+\subsection{Mediciones}
+\subsection{Mediciones de solución no optimizada}
 \verbatiminput{./non_opt_res.txt}
 \newpage
 
-\subsection{Mediciones de solucion optimizada}
-\verbatiminput{./opt_res.txt}
+\subsection{Mediciones de solución optimizada}
+\verbatiminput{./opt_res.txt}	
 
-\subsection{Anï¿½lisis de los datos}
+\subsection{Análisis de los datos}
+
+A continuación se muestran comparaciones de tiempo y/o uso de memoria entre la versión optimizada y la versión normal, para diferentes parámetros. Se puede notar a simple vista que la versión optimizada es más rápida que la original, dado que porque se ejecuta menos veces MD5, pero a mayor costo de memoria.
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1.3\textwidth]{analisis1.png}
+\end{center}
+\caption{} \label{fig005}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=1.3\textwidth]{analisis2.png}
+\end{center}
+\caption{} \label{fig006}
+\end{figure}
+
 	
-\newpage	
+	\newpage	
 \section{Conclusiones}	
-Mediante un anï¿½lisis del cï¿½digo fuente a simple vista y con herramientas de perfilado como gprof, logramos poder determinar cuï¿½les eran los causantes del bajo desempeï¿½o del programa y cuï¿½les eran los cuellos de botella que hacï¿½an que el programa tarde un poco mï¿½s. De esta forma, pudimos optimizar el programa y lograr que se ejecute mejor.
-
-Tambiï¿½n pudimos aprender el manejo de estas herramientas de perfilado, y que es importante tener en cuenta el entorno en el que estamos trabajando (es decir, la jerarquï¿½a de memorias, cpu, etc), si es que queremos que un programa se ejecute de forma ï¿½ptima en ï¿½l.
+Mediante un análisis con herramientas de perfilado como cProfile, logramos poder determinar cuáles eran los causantes del bajo desempeño del programa y cuáles eran los cuellos de botella que hacían que el programa tarde un poco más. De esta forma, pudimos optimizar el programa y lograr que se ejecute de una manera màs performante respecto del original.
+También pudimos aprender el manejo de estas herramientas de perfilado, y que es importante tener en cuenta el entorno en el que estamos trabajando (es decir, la jerarquía de memorias, cpu, etc), si es que queremos que un programa se ejecute de forma óptima en él.
 
 	
-% Citas bibliogrï¿½ficas.
+% Citas bibliográficas.
 \begin{thebibliography}{99}
 
 [1] cProfile - https://docs.python.org/2/library/profile.html             
